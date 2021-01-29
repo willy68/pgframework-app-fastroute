@@ -3,11 +3,6 @@
 namespace App\Auth;
 
 use Framework\Module;
-use App\Auth\Actions\LoginAction;
-use Mezzio\Router\FastRouteRouter;
-use Mezzio\Router\RouterInterface;
-use Psr\Container\ContainerInterface;
-use App\Auth\Actions\LoginAttemptAction;
 use Framework\Renderer\RendererInterface;
 use Framework\Auth\Middleware\CookieLogoutMiddleware;
 use Mezzio\Router\RouteCollector;
@@ -28,11 +23,9 @@ class AuthModule extends Module
     {
         $renderer->addPath('auth', __DIR__ . '/views');
 
-        $routes = $collector->getRoutes();
-        foreach($routes as $route) {
-            if ($route->getName() === 'auth.logout') {
-                $route->middleware(CookieLogoutMiddleware::class);
-            }
+        $route = $collector->getRouteNames('auth.logout');
+        if ($route) {
+            $route->middleware(CookieLogoutMiddleware::class);
         }
     }
 }

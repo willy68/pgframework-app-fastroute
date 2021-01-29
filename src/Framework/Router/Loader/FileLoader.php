@@ -5,7 +5,6 @@ namespace Framework\Router\Loader;
 use ReflectionMethod;
 use Mezzio\Router\Route;
 use Mezzio\Router\RouteGroup;
-use Mezzio\Router\RouterInterface;
 use Doctrine\Common\Annotations\Reader;
 use Framework\Router\Parser\PhpTokenParser;
 use Mezzio\Router\RouteCollector;
@@ -85,7 +84,7 @@ class FileLoader extends ClassLoader
 
         $path = $methodAnnotation->getPath();
         if ($classAnnotation) {
-            $path = $classAnnotation->getPath() . $methodAnnotation->getPath();
+            $path = $classAnnotation->getPath() . $path;
         }
         return $this->collector->route(
             $path,
