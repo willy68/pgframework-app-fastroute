@@ -23,7 +23,7 @@ class AuthModule extends Module
     {
         $renderer->addPath('auth', __DIR__ . '/views');
 
-        $route = $collector->getRouteNames('auth.logout');
+        $route = $collector->getRouteName('auth.logout');
         if ($route) {
             $route->middleware(CookieLogoutMiddleware::class);
         }
