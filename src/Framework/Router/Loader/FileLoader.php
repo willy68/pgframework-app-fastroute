@@ -29,9 +29,9 @@ class FileLoader extends ClassLoader
      * Parse annotations @Route and add routes to the router
      *
      * @param string $file
-     * @return RouteGroup[]|Route[]|null
+     * @return Route[]
      */
-    public function load(string $file)
+    public function load(string $file): array
     {
         if (!is_file($file)) {
             return null;

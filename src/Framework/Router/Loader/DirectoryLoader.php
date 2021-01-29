@@ -9,9 +9,9 @@ class DirectoryLoader extends FileLoader
      * Find all php files with @Route annotations
      *
      * @param string $dir
-     * @return void
+     * @return Route[]|null
      */
-    public function load(string $dir)
+    public function load(string $dir): array
     {
         if (!is_dir($dir)) {
             return parent::load($dir);
