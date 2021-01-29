@@ -11,7 +11,7 @@ class DirectoryLoader extends FileLoader
      * @param string $dir
      * @return Route[]|null
      */
-    public function load(string $dir): array
+    public function load(string $dir): ?array
     {
         if (!is_dir($dir)) {
             return parent::load($dir);

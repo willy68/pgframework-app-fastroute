@@ -2,20 +2,21 @@
 
 namespace App\Admin;
 
+use Framework\Router\Annotation\Route;
 use Framework\Renderer\RendererInterface;
 
+/**
+ */
 class DashboardAction
 {
 
     /**
-     * Undocumented variable
      *
      * @var RendererInterface
      */
     private $renderer;
 
     /**
-     * Undocumented variable
      *
      * @var AdminWidgetInterface[]
      */
@@ -23,20 +24,18 @@ class DashboardAction
 
     public function __construct(RendererInterface $renderer, array $widgets)
     {
-        
+
         $this->renderer = $renderer;
         $this->widgets = $widgets;
     }
-/*
-    public function __invoke()
-    {
-        $widgets = array_reduce($this->widgets, function ($html, AdminWidgetInterface $widget) {
-            return $html . $widget->render();
-        }, '');
-        return $this->renderer->render('@admin/dashboard', compact('widgets'));
-    }
-*/
-    public function index()
+
+    /**
+     * 
+     * @Route("/admin", name="admin", methods={"GET"})
+     *
+     * @return string
+     */
+    public function index(): string
     {
         $widgets = array_reduce($this->widgets, function ($html, AdminWidgetInterface $widget) {
             return $html . $widget->render();

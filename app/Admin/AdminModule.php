@@ -3,10 +3,9 @@
 namespace App\Admin;
 
 use Framework\Module;
-use App\Admin\DashboardAction;
 use Grafikart\Csrf\CsrfMiddleware;
 use Mezzio\Router\RouterInterface;
-use Mezzio\Router\FastRouteRouter;
+use Mezzio\Router\FastRouteRouter as Router;
 use App\Blog\Actions\PostCrudAction;
 use Framework\Renderer\TwigRenderer;
 use Framework\Auth\LoggedInMiddleware;
@@ -21,6 +20,10 @@ class AdminModule extends Module
 
     public const DEFINITIONS = __DIR__ . '/config.php';
 
+    public const ANNOTATIONS = [
+        __DIR__
+    ];
+
     public function __construct(
         RendererInterface $renderer,
         AdminTwigExtension $adminTwigExtension,
@@ -28,8 +31,7 @@ class AdminModule extends Module
         string $prefix
     ) {
         $renderer->addPath('admin', __DIR__ . '/views');
-        /** @var FastRouteRouter $router */
-        $router->get($prefix, DashboardAction::class . '::index', 'admin');
+        /** @var Router $router */
         $router->crud("$prefix/posts", PostCrudAction::class, 'blog.admin')
             ->middleware(ForbidenMiddleware::class)
             ->middleware(CookieLoginMiddleware::class)
