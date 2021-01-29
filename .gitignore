@@ -1,24 +1,50 @@
-# Composer files
-composer.phar
-vendor/
+.project
+.buildpath
+.settings
+*.log
+*.db
+*.swp
+vendor/*
+composer.lock
+phpunit.xml
 
-# Local configs
-config/autoload/*.local.php
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.editorconfig
 
-# Binary gettext files
-*.mo
+# IDE - VSCode
+.vscode/*
 
-# Data
-data/logs/
-data/cache/
-data/sessions/
-data/tmp/
-temp/
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
 
-#Doctrine 2
-data/DoctrineORMModule/Proxy/
-data/DoctrineORMModule/cache/
+# System Files
+.DS_Store
+Thumbs.db
 
-# Legacy ZF1
-demos/
-extras/documentation
+#
+bin/*
+!bin/.gitkeep
+.env.local
+/config/database.php
+database.php
+*~
+/generated_models
+/generated_routes
+/generated_controllers
+routes.xml
+tmp
+/.vs/slnx.sqlite
