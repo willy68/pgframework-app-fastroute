@@ -2,16 +2,20 @@
 
 namespace App\Auth\Actions;
 
-use Mezzio\Router\RouterInterface;
 use Framework\Auth\AuthSession;
+use Mezzio\Router\RouterInterface;
 use Framework\Session\FlashService;
+use Framework\Router\Annotation\Route;
 use Framework\Session\SessionInterface;
 use Framework\Actions\RouterAwareAction;
-use Framework\Auth\RememberMe\RememberMeInterface;
 use Framework\Response\ResponseRedirect;
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Framework\Auth\RememberMe\RememberMeInterface;
 
+/**
+ * @Route("/login", methods={"POST"})
+ */
 class LoginAttemptAction
 {
     use RouterAwareAction;

@@ -2,9 +2,12 @@
 
 namespace App\Auth\Actions;
 
+use Framework\Router\Annotation\Route;
 use Framework\Renderer\RendererInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * @Route("/login", name="auth.login", methods={"GET"})
+ */
 class LoginAction
 {
 
@@ -15,7 +18,7 @@ class LoginAction
         $this->renderer = $renderer;
     }
 
-    public function __invoke(ServerRequestInterface $request): string
+    public function __invoke(): string
     {
         // $submited = false;
         return $this->renderer->render('@auth/login'/*, compact('submited')*/);

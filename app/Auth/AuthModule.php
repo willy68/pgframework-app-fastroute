@@ -24,12 +24,9 @@ class AuthModule extends Module
         __DIR__ . '/Actions'
     ];
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(RendererInterface $renderer, RouteCollector $collector)
     {
-        $container->get(RendererInterface::class)->addPath('auth', __DIR__ . '/views');
-
-        /** @var RouteCollector $collector */
-        $collector = $container->get(RouteCollector::class);
+        $renderer->addPath('auth', __DIR__ . '/views');
 
         $routes = $collector->getRoutes();
         foreach($routes as $route) {
@@ -37,12 +34,5 @@ class AuthModule extends Module
                 $route->middleware(CookieLogoutMiddleware::class);
             }
         }
-
-        /** @var FastRouteRouter $router */
-        $router = $container->get(RouterInterface::class);
-        $router->get($container->get('auth.login'), LoginAction::class, 'auth.login');
-        $router->post($container->get('auth.login'), LoginAttemptAction::class);
-        //$router->post('/logout', LogoutAction::class, 'auth.logout')
-          //  ->middleware(CookieLogoutMiddleware::class);
     }
 }
