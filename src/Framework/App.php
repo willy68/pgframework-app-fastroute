@@ -9,9 +9,11 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Framework\Environnement\Environnement;
+use Framework\Router\Loader\DirectoryLoader;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Framework\Middleware\Stack\MiddlewareAwareStackTrait;
+use Mezzio\Router\RouterInterface;
 
 /**
  * Application
@@ -85,12 +87,12 @@ class App implements RequestHandlerInterface
         return $this;
     }
 
-        /**
-         * Undocumented function
-         *
-         * @param array $modules
-         * @return self
-         */
+    /**
+     * Undocumented function
+     *
+     * @param array $modules
+     * @return self
+     */
     public function addModules(array $modules): self
     {
         foreach ($modules as $module) {
@@ -142,12 +144,17 @@ class App implements RequestHandlerInterface
     {
         if ($request === null) {
             $request = ServerRequest::fromGlobals();
-            //$request = $this->getContainer()->get(ServerRequestInterface::class);
         }
         foreach ($this->modules as $module) {
-            $this->getContainer()->get($module);
-        }
+            $module = $this->getContainer()->get($module);
 
+            if (!empty($module::ANNOTATIONS)) {
+                $loader = new DirectoryLoader($this->getContainer()->get(RouterInterface::class));
+                foreach ($module::ANNOTATIONS as $dir) {
+                    $loader->load($dir);
+                }
+            }
+        }
         return $this->handle($request);
     }
 

@@ -12,7 +12,7 @@ trait RouterAwareAction
 {
 
   /**
-   * Undocumented function
+   * Redirection
    *
    * @param string $path
    * @param array $params

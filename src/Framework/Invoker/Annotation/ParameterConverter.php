@@ -34,23 +34,18 @@ final class ParameterConverter
     /**
      * @throws InvalidAnnotation
      */
-    public function __construct(array $values)
+    public function __construct(array $parameters)
     {
         // Method param name
-        if (!isset($values['value'])) {
+        if (!isset($parameters['value'])) {
             throw new InvalidAnnotation(sprintf(
                 '@ParameterConverter("name", options={"id = "value"}) expects parameter "name", %s given.',
-                json_encode($values)
+                json_encode($parameters)
             ));
             return;
         }
 
-        // @ParameterConverter({...}) on a method
-        if (is_array($values)) {
-            foreach ($values as $key => $value) {
-                $this->parameters[$key] = $value;
-            }
-        }
+        $this->parameters = $parameters;
     }
 
     /**

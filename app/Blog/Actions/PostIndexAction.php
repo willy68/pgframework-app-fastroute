@@ -2,21 +2,17 @@
 
 namespace App\Blog\Actions;
 
-use App\Blog\Models\Categories;
 use App\Blog\Models\Posts;
-use Framework\Actions\RouterAwareAction;
+use App\Blog\Models\Categories;
+use Framework\Router\Annotation\Route;
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
- * Undocumented class
+ * @Route("/blog", name="blog.index")
  */
 class PostIndexAction
 {
-    /**
-     *
-     */
-    use RouterAwareAction;
 
     /**
      * Undocumented variable
@@ -30,19 +26,17 @@ class PostIndexAction
      *
      * @param RendererInterface $renderer
      */
-    public function __construct(
-        RendererInterface $renderer
-    ) {
+    public function __construct(RendererInterface $renderer)
+    {
         $this->renderer = $renderer;
     }
 
     /**
-     * Undocumented function
      *
      * @param Request $request
-     * @return void
+     * @return string
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): string
     {
         $params = $request->getQueryParams();
         // Init Query

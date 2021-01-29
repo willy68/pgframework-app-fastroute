@@ -9,4 +9,6 @@ class Module
     public const MIGRATIONS = null;
 
     public const SEEDS = null;
+
+    public const ANNOTATIONS = [];
 }

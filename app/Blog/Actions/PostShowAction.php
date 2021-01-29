@@ -2,15 +2,16 @@
 
 namespace App\Blog\Actions;
 
-use Mezzio\Router\RouterInterface;
 use App\Blog\Models\Posts;
 use App\Blog\Models\Categories;
+use Mezzio\Router\RouterInterface;
+use Framework\Router\Annotation\Route;
 use Framework\Actions\RouterAwareAction;
 use Framework\Renderer\RendererInterface;
 use Framework\Invoker\Annotation\ParameterConverter;
 
 /**
- * Undocumented class
+ * @Route("/blog")
  */
 class PostShowAction
 {
@@ -44,15 +45,14 @@ class PostShowAction
     /**
      * Show blog post
      *
+     * @Route("/{slug:[a-z\-0-9]+}-{id:[0-9]+}", name="blog.show", method={"GET"})
+     * 
      * @param string $slug
      * @param Post $post
      * @return mixed
      */
-    public function __invoke(string $slug, /*int $id*/Posts $post)
+    public function __invoke(string $slug, Posts $post)
     {
-        //$slug = $request->getAttribute('slug');
-        //$post = Posts::find($request->getAttribute('id'), ['include' => ['category']]);
-        //$post = Posts::find($id, ['include' => ['category']]);
         if ($post->slug !== $slug) {
             return $this->redirect('blog.show', [
                 'slug' => $post->slug,
@@ -68,14 +68,14 @@ class PostShowAction
     /**
      * Show blog post
      * 
+     * @Route("/category/{category_id:[0-9]+}/post/{id:[0-9]+}", name="blog.postShow")
      * @ParameterConverter("category", options={"id"="category_id"})
-     * @ParameterConverter("post", options={"id"="id"})
      *
-     * @param \App\Blog\Models\Categories $category
-     * @param \App\Blog\Models\Posts $post
-     * @return mixed
+     * @param Categories $category
+     * @param Posts $post
+     * @return string
      */
-    public function postShow(Categories $category, Posts $post)
+    public function postShow(Categories $category, Posts $post): string
     {
         return $this->renderer->render('@blog/show', [
             'post' => $post
@@ -85,13 +85,14 @@ class PostShowAction
     /**
      * Show blog post
      * 
+     * @Route("/category/{category_slug:[a-z\-0-9]+}/post/{id:[0-9]+}", name="blog.postCategoryShow", methods={"GET"})
      * @ParameterConverter("category", options={"slug"="category_slug"})
      *
-     * @param \App\Blog\Models\Categories $category
-     * @param \App\Blog\Models\Posts $post
-     * @return mixed
+     * @param Categories $category
+     * @param Posts $post
+     * @return string
      */
-    public function postCategoryShow(Categories $category, Posts $post)
+    public function postCategoryShow(Categories $category, Posts $post): string
     {
         return $this->renderer->render('@blog/show', [
             'post' => $post

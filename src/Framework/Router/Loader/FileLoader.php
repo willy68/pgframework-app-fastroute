@@ -56,6 +56,15 @@ class FileLoader extends ClassLoader
             }
         }
 
+        if (empty($routes) && $classAnnotation && $reflectionClass->hasMethod('__invoke')) {
+            $routes[] = $this->router->addRoute(new Route(
+                $classAnnotation->getPath(),
+                $reflectionClass->getName(),
+                $classAnnotation->getName(),
+                $classAnnotation->getMethods()
+            ));
+        }
+
         gc_mem_caches();
         return $routes;
     }

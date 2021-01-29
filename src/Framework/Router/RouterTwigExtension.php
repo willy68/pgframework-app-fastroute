@@ -43,7 +43,7 @@ class RouterTwigExtension extends AbstractExtension
     }
 
     /**
-     * Undocumented function
+     * Genère un lien html
      *
      * @param string $path
      * @param array $params
@@ -55,7 +55,7 @@ class RouterTwigExtension extends AbstractExtension
     }
 
     /**
-     * Undocumented function
+     * Détermine si un chemin est un sous chemin
      *
      * @param string $path
      * @return bool

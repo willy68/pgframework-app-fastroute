@@ -2,56 +2,38 @@
 
 namespace App\Blog\Actions;
 
-use Mezzio\Router\RouterInterface;
 use App\Blog\Models\Posts;
 use GuzzleHttp\Psr7\Response;
 use App\Blog\Models\Categories;
-use Framework\Actions\RouterAwareAction;
+use Framework\Router\Annotation\Route;
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
- * Undocumented class
+ * @Route("/blog/category/{slug:[a-z\-0-9]+}", name="blog.category")
  */
 class CategoryShowAction
 {
-    /**
-     *
-     */
-    use RouterAwareAction;
 
     /**
-     * Undocumented variable
      *
      * @var RendererInterface
      */
     private $renderer;
 
     /**
-     * Undocumented variable
-     *
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * Undocumented function
      *
      * @param RendererInterface $renderer
      */
-    public function __construct(
-        RendererInterface $renderer,
-        RouterInterface $router
-    ) {
+    public function __construct(RendererInterface $renderer)
+    {
         $this->renderer = $renderer;
-        $this->router = $router;
     }
 
     /**
-     * Undocumented function
      *
      * @param Request $request
-     * @return void
+     * @return string|Response
      */
     public function __invoke(Request $request)
     {
