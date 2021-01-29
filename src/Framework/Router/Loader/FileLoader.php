@@ -8,13 +8,14 @@ use Mezzio\Router\RouteGroup;
 use Mezzio\Router\RouterInterface;
 use Doctrine\Common\Annotations\Reader;
 use Framework\Router\Parser\PhpTokenParser;
+use Mezzio\Router\RouteCollector;
 
 class FileLoader extends ClassLoader
 {
-    protected $router;
+    protected $collector;
 
     public function __construct(
-        RouterInterface $router,
+        RouteCollector $collector,
         ?Reader $reader = null
     ) {
         if (!\function_exists('token_get_all')) {
@@ -22,7 +23,7 @@ class FileLoader extends ClassLoader
         }
 
         parent::__construct($reader);
-        $this->router = $router;
+        $this->collector = $collector;
     }
 
     /**
@@ -38,7 +39,7 @@ class FileLoader extends ClassLoader
         }
 
         $class = PhpTokenParser::findClass($file);
-        if (!$class) {
+        if (!$class || !class_exists($class)) {
             return null;
         }
 
@@ -57,12 +58,11 @@ class FileLoader extends ClassLoader
         }
 
         if (empty($routes) && $classAnnotation && $reflectionClass->hasMethod('__invoke')) {
-            $routes[] = $this->router->addRoute(new Route(
+            $routes[] = $this->collector->route(
                 $classAnnotation->getPath(),
                 $reflectionClass->getName(),
                 $classAnnotation->getName(),
-                $classAnnotation->getMethods()
-            ));
+                $classAnnotation->getMethods());
         }
 
         gc_mem_caches();
@@ -75,33 +75,23 @@ class FileLoader extends ClassLoader
      * @param object $methodAnnotation
      * @param \ReflectionMethod $method
      * @param object|null $classAnnotation
-     * @return void
+     * @return Route
      */
     protected function addRoute(
         object $methodAnnotation,
         ReflectionMethod $method,
         ?object $classAnnotation
-    ) {
+    ): Route {
 
+        $path = $methodAnnotation->getPath();
         if ($classAnnotation) {
-            return $this->router->group(
-                $classAnnotation->getPath(),
-                function (RouteGroup $routeGroup) use ($methodAnnotation, $method) {
-                    $routeGroup->addRoute(new Route(
-                        $methodAnnotation->getPath(),
-                        $method->getDeclaringClass()->getName() . "::" . $method->getName(),
-                        $methodAnnotation->getName(),
-                        $methodAnnotation->getMethods()
-                    ));
-                }
-            );
-        } else {
-            return $this->router->addRoute(new Route(
-                $methodAnnotation->getPath(),
-                $method->getDeclaringClass()->getName() . "::" . $method->getName(),
-                $methodAnnotation->getName(),
-                $methodAnnotation->getMethods()
-            ));
+            $path = $classAnnotation->getPath() . $methodAnnotation->getPath();
         }
+        return $this->collector->route(
+            $path,
+            $method->getDeclaringClass()->getName() . "::" . $method->getName(),
+            $methodAnnotation->getName(),
+            $methodAnnotation->getMethods()
+        );
     }
 }

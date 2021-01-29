@@ -41,6 +41,7 @@ use Framework\Validator\Validation\{
 };
 use Invoker\Invoker;
 use Mezzio\Router\FastRouteRouter;
+use Mezzio\Router\RouteCollector;
 use Mezzio\Router\RouterInterface;
 use Tuupola\Middleware\JwtAuthentication;
 
@@ -88,6 +89,9 @@ return [
     Invoker::class => factory(InvokerFactory::class),
     RouterInterface::class => factory(FastRouteRouterFactory::class),
     FastRouteRouter::class => factory(FastRouteRouterFactory::class),
+    'duplicate.route' => true,
+    RouteCollector::class => \DI\autowire()
+        ->constructorParameter("detectDuplicates", \DI\get('duplicate.route')),
     RendererInterface::class => factory(TwigRendererFactory::class),
     Whoops::class => function (ContainerInterface $c) {
         return new Whoops(null, new ResponseFactory());

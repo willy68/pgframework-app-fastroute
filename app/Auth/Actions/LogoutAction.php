@@ -4,19 +4,14 @@ namespace App\Auth\Actions;
 
 use Framework\Auth\AuthSession;
 use Framework\Session\FlashService;
+use Framework\Router\Annotation\Route;
 use Framework\Response\ResponseRedirect;
-use Framework\Renderer\RendererInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * @Route("/logout", name="auth.logout", methods={"POST"})
+ */
 class LogoutAction
 {
-
-    /**
-     * Undocumented variable
-     *
-     * @var RendererInterface
-     */
-    private $renderer;
 
     /**
      * Undocumented variable
@@ -33,17 +28,15 @@ class LogoutAction
     private $flashService;
 
     public function __construct(
-        RendererInterface $renderer,
         AuthSession $auth,
         FlashService $flashService
     )
     {
-        $this->renderer = $renderer;
         $this->auth = $auth;
         $this->flashService = $flashService;
     }
 
-    public function __invoke(ServerRequestInterface $request)
+    public function __invoke()
     {
         $this->auth->logout();
         $this->flashService->success('Vous êtes maintenant déconnecté');

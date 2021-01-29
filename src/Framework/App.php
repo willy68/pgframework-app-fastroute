@@ -13,6 +13,7 @@ use Framework\Router\Loader\DirectoryLoader;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Framework\Middleware\Stack\MiddlewareAwareStackTrait;
+use Mezzio\Router\RouteCollector;
 use Mezzio\Router\RouterInterface;
 
 /**
@@ -146,14 +147,14 @@ class App implements RequestHandlerInterface
             $request = ServerRequest::fromGlobals();
         }
         foreach ($this->modules as $module) {
-            $module = $this->getContainer()->get($module);
-
             if (!empty($module::ANNOTATIONS)) {
-                $loader = new DirectoryLoader($this->getContainer()->get(RouterInterface::class));
+                $loader = new DirectoryLoader(
+                    $this->getContainer()->get(RouteCollector::class));
                 foreach ($module::ANNOTATIONS as $dir) {
                     $loader->load($dir);
                 }
             }
+            $module = $this->getContainer()->get($module);
         }
         return $this->handle($request);
     }

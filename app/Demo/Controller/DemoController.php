@@ -3,10 +3,11 @@
 namespace App\Demo\Controller;
 
 use App\Auth\Models\User;
-use Framework\Database\ActiveRecord\ActiveRecordQuery;
+use Framework\Router\Annotation\Route;
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Framework\Validator\Validation\ValidationRules;
+use Framework\Database\ActiveRecord\ActiveRecordQuery;
 
 class DemoController
 {
@@ -18,6 +19,8 @@ class DemoController
      * Il est possible d'injecter la ServerRequestInterface
      * et les paramètres de la route (ex. $id).
      * Ce type d'injection est possible avec \DI\Container de PHP-DI
+     * 
+     * @Route("/", name="demo.index", methods={"GET"})
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Framework\Renderer\RendererInterface $renderer
@@ -40,7 +43,7 @@ class DemoController
         $user = User::find_by_username(['username' => 'admin']);
         $user_array = $user->to_array();
         $mysql_ver = $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
-        $params = array_merge($request->getServerParams(), $user_array, [$mysql_ver]);
+        $params = array_merge($request->getServerParams(), $user_array, [$mysql_ver], [$query->__toString()]);
         return $renderer->render('@demo/index', compact('params'));
     }
 }
