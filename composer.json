@@ -12,14 +12,6 @@
         {
             "type": "git",
             "url": "https://github.com/willy68/pgconsole.git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/willy68/mezzio-fastroute-dev.git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/willy68/mezzio-router-dev.git"
         }
     ],
     "require": {
@@ -37,7 +29,7 @@
         "guzzlehttp/psr7": "^1.6",
         "http-interop/response-sender": "^1.0",
         "php-di/php-di": "^6.0",
-        "willy68/mezzio-fastroute-dev": "dev-master",
+        "willy68/mezzio-fastroute-dev": "^3.3",
         "doctrine/annotations": "^1.11",
         "ext-json": "*",
         "ext-pdo": "*"
