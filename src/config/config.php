@@ -96,7 +96,21 @@ return [
     Whoops::class => function (ContainerInterface $c) {
         return new Whoops(null, new ResponseFactory());
     },
+    'database.sgdb' => Environnement::getEnv('DATABASE_SGDB', 'mysql'),
+    'database.host' => Environnement::getEnv('DATABASE_HOST', 'localhost'),
+    'database.user' => Environnement::getEnv('DATABASE_USER', 'root'),
+    'database.password' => Environnement::getEnv('DATABASE_PASSWORD', 'root'),
+    'database.name' => Environnement::getEnv('DATABASE_NAME', 'my_database'),
     'ActiveRecord' => factory(ActiveRecordFactory::class),
+    'ActiveRecord.connections' => function (ContainerInterface $c): array {
+        return [
+            'development' => $c->get('database.sgdb') . "://" .
+                $c->get('database.user') . ":" .
+                $c->get('database.password') . "@" .
+                $c->get('database.host') . "/" .
+                $c->get('database.name') . "?charset=utf8"
+        ];
+    },
     PDO::class => function (ContainerInterface $c) {
         return new PDO(
             $c->get('database.sgdb') . ":host=" . $c->get('database.host') . ";dbname=" . $c->get('database.name'),
@@ -107,9 +121,5 @@ return [
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
             ]
         );
-    }/*,
-    ServerRequestInterface::class => function (ContainerInterface $c) {
-        return ServerRequest::fromGlobals();
-    }*/
-
+    }
 ];

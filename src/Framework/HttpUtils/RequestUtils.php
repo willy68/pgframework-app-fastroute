@@ -26,7 +26,7 @@ class RequestUtils
      */
     public static function isJson(ServerRequestInterface $request): bool
     {
-        return 1 === preg_match('{^application/(?:\w+\++)*json$)i', $request->getHeader('Content-Type'));
+        return 1 === preg_match('{^application/(?:\w+\++)*json$}i', $request->getHeaderLine('content-type'));
     }
 
     /**
@@ -37,8 +37,8 @@ class RequestUtils
      */
     public static function getPostParams(ServerRequestInterface $request): array
     {
-        if (self::isJson($request)) {
-            return json_decode((string) $request->getBody(), true);
+        if (static::isJson($request)) {
+            return json_decode($request->getBody()->getContents(), true);
         }
         return $request->getParsedBody();
     }
@@ -54,7 +54,7 @@ class RequestUtils
         $accepts = explode(',', $request->getHeaderLine('Accept'));
         $format = 'html';
         foreach($accepts as $accept) {
-            if (1 === preg_match('{^application/(?:\w+\++)*json$)i', $accept)) {
+            if (1 === preg_match('{^application/(?:\w+\++)*json$}i', $accept)) {
                 $format = 'json';
             }
         }
