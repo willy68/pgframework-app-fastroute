@@ -3,9 +3,9 @@
 namespace App\Api;
 
 use Framework\Module;
-use Framework\Router;
+use Mezzio\Router\RouteGroup;
 use App\Api\User\UserController;
-use Framework\Router\RouteGroup;
+use Mezzio\Router\RouterInterface;
 use App\Api\Controller\ApiController;
 use App\Api\User\Role\RoleController;
 use App\Api\Cpville\CpvilleController;
@@ -14,6 +14,7 @@ use App\Api\Entreprise\EntrepriseController;
 use App\Api\DernierCode\DernierCodeController;
 use Framework\Middleware\ContentTypeJsonMiddleware;
 use Framework\Middleware\CorsAllowOriginMiddleware;
+use Mezzio\Router\FastRouteRouter;
 
 class ApiModule extends Module
 {
@@ -27,9 +28,10 @@ class ApiModule extends Module
      * ApiModule constructor.
      * @param Router $router
      */
-    public function __construct(Router $router)
+    public function __construct(RouterInterface $router)
     {
-        $router->addRoute('/api', ApiController::class . '::index', 'api.index', ['GET'])
+        /** @var FastRouteRouter $router */
+        $router->get('/api', ApiController::class . '::index', 'api.index')
             ->middleware(CorsAllowOriginMiddleware::class)
             ->middleware(ContentTypeJsonMiddleware::class);
 
