@@ -26,7 +26,7 @@ class RequestUtils
      */
     public static function isJson(ServerRequestInterface $request): bool
     {
-        return 1 === preg_match('{^application/(?:\w+\++)*json$)i', $request->getHeader('content-type'));
+        return 1 === preg_match('{^application/(?:\w+\++)*json$)i', $request->getHeader('Content-Type'));
     }
 
     /**
