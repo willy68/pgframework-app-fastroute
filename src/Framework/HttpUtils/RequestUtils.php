@@ -19,6 +19,17 @@ class RequestUtils
     }
 
     /**
+     * Is json request?
+     *
+     * @param ServerRequestInterface $request
+     * @return bool
+     */
+    public static function isJson(ServerRequestInterface $request): bool
+    {
+        return 1 === preg_match('{^application/(?:\w+\++)*json$)i', $request->getHeader('content-type'));
+    }
+
+    /**
      * Return POST params for Ajax call or Normal parsed body
      *
      * @param ServerRequestInterface $request
@@ -26,7 +37,7 @@ class RequestUtils
      */
     public static function getPostParams(ServerRequestInterface $request): array
     {
-        if (self::isAjax($request)) {
+        if (self::isJson($request)) {
             return json_decode((string) $request->getBody(), true);
         }
         return $request->getParsedBody();
@@ -40,13 +51,12 @@ class RequestUtils
      */
     public static function getAcceptFormat(ServerRequestInterface $request): string
     {
-        $accept = explode(',', $request->getHeaderLine('Accept'));
-        $format = 'json';
-        if (in_array('application/json', $accept) || in_array('application/json;charset=utf8', $accept)) {
-            $format = 'json';
-        }
-        if (in_array('text/html', $accept) || in_array('application/xhtml+xml', $accept)) {
-            $format = 'html';
+        $accepts = explode(',', $request->getHeaderLine('Accept'));
+        $format = 'html';
+        foreach($accepts as $accept) {
+            if (1 === preg_match('{^application/(?:\w+\++)*json$)i', $accept)) {
+                $format = 'json';
+            }
         }
         return $format;
     }
