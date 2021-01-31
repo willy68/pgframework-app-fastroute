@@ -41,12 +41,12 @@ class CsrfGetCookieMiddleware implements MiddlewareInterface
             if (!$request->hasHeader('X-CSRF-TOKEN')) {
                 return $handler->handle($request);
             }
-                $params = $request->getParsedBody() ?: [];
-                $token = $request->getHeader('X-CSRF-TOKEN')[0];
-                $request = $request->withParsedBody(
-                    array_merge($params, [$this->csrfMiddleware->getFormKey() => $token])
-                );
-                return $handler->handle($request);
+            $params = $request->getParsedBody() ?: [];
+            $token = $request->getHeader('X-CSRF-TOKEN')[0];
+            $request = $request->withParsedBody(
+                array_merge($params, [$this->csrfMiddleware->getFormKey() => $token])
+            );
+            return $handler->handle($request);
         }
 
         if (\in_array($method, ['GET', 'HEAD'], true)) {
