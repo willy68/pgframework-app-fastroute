@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Auth\Security;
+namespace Framework\Security;
 
 use Framework\Environnement\Environnement;
 
@@ -125,10 +125,6 @@ class Security
     public static function verifyToken(string $token, int $length = Security::TOKEN_VALUE_LENGTH): bool
     {
         $decoded = base64_decode($token, true);
-
-        if (strlen($decoded) <= $length) {
-            return false;
-        }
 
         $key = substr($decoded, 0, $length);
         $hmac = substr($decoded, $length);

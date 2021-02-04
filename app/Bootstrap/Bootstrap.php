@@ -13,7 +13,7 @@ if (!isset($basePath)) {
 }
 
 $dotenv = new Dotenv();
-$dotenv->loadEnv($basePath . '/.env');
+$dotenv->bootEnv($basePath . '/.env');
 
 $bootstrap = require 'App.php';
 
