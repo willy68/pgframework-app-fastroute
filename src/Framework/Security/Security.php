@@ -24,6 +24,13 @@ class Security
      */
     public const TOKEN_WITH_CHECKSUM_LENGTH = 56;
 
+    /**
+     * Last token created
+     *
+     * @var string
+     */
+    protected static $lastToken;
+
     public static function randomPassword(int $length): string
     {
         return substr(
@@ -58,7 +65,9 @@ class Security
     {
         $value = Security::randomBytes($length);
 
-        return base64_encode($value . hash_hmac('sha1', $value, static::getSalt()));
+        static::$lastToken = base64_encode($value . hash_hmac('sha1', $value, static::getSalt()));
+
+        return static::$lastToken;
     }
 
     /**

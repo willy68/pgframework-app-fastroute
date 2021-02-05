@@ -3,8 +3,10 @@
 namespace App\Api;
 
 use Framework\Module;
-use Mezzio\Router\RouteGroup;
+use Framework\Router\Router;
 use App\Api\User\UserController;
+use Framework\Router\RouteGroup;
+use Mezzio\Router\FastRouteRouter;
 use Mezzio\Router\RouterInterface;
 use App\Api\Controller\ApiController;
 use App\Api\User\Role\RoleController;
@@ -14,7 +16,6 @@ use App\Api\Entreprise\EntrepriseController;
 use App\Api\DernierCode\DernierCodeController;
 use Framework\Middleware\ContentTypeJsonMiddleware;
 use Framework\Middleware\CorsAllowOriginMiddleware;
-use Mezzio\Router\FastRouteRouter;
 
 class ApiModule extends Module
 {
@@ -36,6 +37,7 @@ class ApiModule extends Module
             ->middleware(ContentTypeJsonMiddleware::class);
 
         // Route without JWT authentication
+        /** @var Router $router */
         $router->group('/api', function (RouteGroup $route) {
             $route->post(
                 '/user/login',

@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use Framework\Module;
+use Framework\Router\Router;
 use Mezzio\Router\RouterInterface;
 use App\Blog\Actions\PostCrudAction;
 use Framework\Renderer\TwigRenderer;
@@ -10,7 +11,6 @@ use Framework\Auth\LoggedInMiddleware;
 use App\Blog\Actions\CategoryCrudAction;
 use Framework\Renderer\RendererInterface;
 use App\Auth\Middleware\ForbidenMiddleware;
-use Mezzio\Router\FastRouteRouter as Router;
 use Framework\Middleware\InvalidCsrfMiddleware;
 use Framework\Middleware\CsrfGetCookieMiddleware;
 use Framework\Auth\Middleware\CookieLoginMiddleware;

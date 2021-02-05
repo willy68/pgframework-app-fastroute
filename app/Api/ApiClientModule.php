@@ -3,7 +3,8 @@
 namespace App\Api;
 
 use Framework\Module;
-use Mezzio\Router\RouteGroup;
+use Framework\Router\Router;
+use Framework\Router\RouteGroup;
 use Mezzio\Router\RouterInterface;
 use App\Api\Client\ClientController;
 use Tuupola\Middleware\JwtAuthentication;
@@ -18,6 +19,7 @@ class ApiClientModule extends Module
     public function __construct(RouterInterface $router)
     {
 
+        /** @var Router $router */
         $router->group('/api', function (RouteGroup $route) {
             // Client
             $route->get(
