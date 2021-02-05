@@ -3,7 +3,6 @@
 namespace Framework\Middleware;
 
 use Dflydev\FigCookies\SetCookie;
-use Grafikart\Csrf\CsrfMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Dflydev\FigCookies\FigRequestCookies;
@@ -45,7 +44,7 @@ class CsrfGetCookieMiddleware implements MiddlewareInterface
         $this->tokenField = $cookie;
 
         if (is_string($cookie) && strlen($cookie) > 0) {
-            $request = $request->withAttribute('_csrf', $cookie);
+            $request = $request->withAttribute($this->config['field'], $cookie);
         }
 
         if (\in_array($method, ['GET', 'HEAD'], true) && null === $cookie) {
