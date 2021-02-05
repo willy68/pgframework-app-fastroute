@@ -8,7 +8,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Dflydev\FigCookies\FigRequestCookies;
 use Dflydev\FigCookies\FigResponseCookies;
 use Framework\Security\Security;
-use Grafikart\Csrf\NoCsrfException;
+use Grafikart\Csrf\InvalidCsrfException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -74,7 +74,7 @@ class CsrfGetCookieMiddleware implements MiddlewareInterface
             }
 
             if (!$request->hasHeader($this->config['header'])) {
-                throw new NoCsrfException('Le cookie Crsf n\'existe pas ou est incorrect');
+                throw new InvalidCsrfException('Le cookie Csrf n\'existe pas ou est incorrect');
             }
             $headerCookie = $request->getHeaderLine($this->config['header']);
             $this->validateToken($headerCookie, $cookie);
@@ -86,17 +86,17 @@ class CsrfGetCookieMiddleware implements MiddlewareInterface
     protected function validateToken($token, $cookie)
     {
         if (!$cookie) {
-            throw new NoCsrfException('Le cookie Crsf n\'existe pas ou est incorrect');
+            throw new InvalidCsrfException('Le cookie Csrf n\'existe pas ou est incorrect');
         }
 
         $cookie = Security::unsaltToken($cookie);
         if (!Security::verifyToken($cookie)) {
-            throw new NoCsrfException('Le cookie Crsf est incorrect');
+            throw new InvalidCsrfException('Le cookie Csrf est incorrect');
         }
 
         $csrfField = Security::unsaltToken($token);
         if (!hash_equals($csrfField, $cookie)) {
-            throw new NoCsrfException('Le cookie Crsf est incorrect');
+            throw new InvalidCsrfException('Le cookie Csrf est incorrect');
         }
     }
 
