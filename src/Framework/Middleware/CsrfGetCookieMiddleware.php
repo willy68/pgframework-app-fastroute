@@ -40,7 +40,6 @@ class CsrfGetCookieMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $method = $request->getMethod();
-        //dd($method);
 
         $cookie = FigRequestCookies::get($request, $this->config['cookieName'])->getValue();
         $this->tokenField = $cookie;
@@ -51,7 +50,8 @@ class CsrfGetCookieMiddleware implements MiddlewareInterface
 
         if (\in_array($method, ['GET', 'HEAD'], true) && null === $cookie) {
 
-            $token = $this->generateToken();
+            $token = Security::saltToken(Security::createToken());
+            $this->tokenField = $token;
             $request = $request->withAttribute($this->config['field'], $token);
 
             $response = $handler->handle($request);

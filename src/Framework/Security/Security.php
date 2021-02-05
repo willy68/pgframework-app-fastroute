@@ -31,6 +31,12 @@ class Security
      */
     protected static $lastToken;
 
+    /**
+     * Create a random password
+     *
+     * @param int $length
+     * @return string
+     */
     public static function randomPassword(int $length): string
     {
         return substr(
@@ -67,6 +73,11 @@ class Security
 
         static::$lastToken = base64_encode($value . hash_hmac('sha1', $value, static::getSalt()));
 
+        return static::$lastToken;
+    }
+
+    public static function getLastToken(): string
+    {
         return static::$lastToken;
     }
 

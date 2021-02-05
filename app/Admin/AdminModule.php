@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use Framework\Module;
-use Framework\Router\Router;
+use Mezzio\Router\FastRouteRouter;
 use Mezzio\Router\RouterInterface;
 use App\Blog\Actions\PostCrudAction;
 use Framework\Renderer\TwigRenderer;
@@ -12,7 +12,6 @@ use App\Blog\Actions\CategoryCrudAction;
 use Framework\Renderer\RendererInterface;
 use App\Auth\Middleware\ForbidenMiddleware;
 use Framework\Middleware\InvalidCsrfMiddleware;
-use Framework\Middleware\CsrfGetCookieMiddleware;
 use Framework\Auth\Middleware\CookieLoginMiddleware;
 
 class AdminModule extends Module
@@ -31,19 +30,17 @@ class AdminModule extends Module
         string $prefix
     ) {
         $renderer->addPath('admin', __DIR__ . '/views');
-        /** @var Router $router */
+        /** @var FastRouteRouter $router */
         $router->crud("$prefix/posts", PostCrudAction::class, 'blog.admin')
             ->middleware(ForbidenMiddleware::class)
             ->middleware(CookieLoginMiddleware::class)
             ->middleware(LoggedInMiddleware::class)
-            ->middleware(InvalidCsrfMiddleware::class)
-            ->middleware(CsrfGetCookieMiddleware::class);
+            ->middleware(InvalidCsrfMiddleware::class);
         $router->crud("$prefix/categories", CategoryCrudAction::class, 'blog.admin.category')
             ->middleware(ForbidenMiddleware::class)
             ->middleware(CookieLoginMiddleware::class)
             ->middleware(LoggedInMiddleware::class)
-            ->middleware(InvalidCsrfMiddleware::class)
-            ->middleware(CsrfGetCookieMiddleware::class);
+            ->middleware(InvalidCsrfMiddleware::class);
         if ($renderer instanceof TwigRenderer) {
             $renderer->getTwig()->addExtension($adminTwigExtension);
         }

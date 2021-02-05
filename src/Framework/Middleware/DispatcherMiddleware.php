@@ -3,11 +3,10 @@
 namespace Framework\Middleware;
 
 use Invoker\Invoker;
-use Framework\Router\Route;
-use Framework\Router\Router;
 use GuzzleHttp\Psr7\Response;
 use Invoker\InvokerInterface;
 use Mezzio\Router\RouteResult;
+use Mezzio\Router\FastRouteRouter;
 use Mezzio\Router\RouterInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -114,7 +113,7 @@ class DispatcherMiddleware implements MiddlewareInterface, RequestHandlerInterfa
      * @param Route|null $route
      * @return void
      */
-    protected function prepareMiddlewareStack(Router $router, ?RouteResult $result): void
+    protected function prepareMiddlewareStack(FastRouteRouter $router, ?RouteResult $result): void
     {
 
         if ($route = $result->getMatchedRoute()) {

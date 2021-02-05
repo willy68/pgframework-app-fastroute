@@ -9,6 +9,7 @@ use Framework\Middleware\CsrfGetCookieMiddleware;
  */
 return [
     'router.middlewares' => \DI\add([
+        CsrfGetCookieMiddleware::class,
         ActiveRecordMiddleware::class,
         RecordNotFoundMiddleware::class,
     ])

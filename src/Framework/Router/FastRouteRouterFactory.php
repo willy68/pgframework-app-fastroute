@@ -36,7 +36,7 @@ class FastRouteRouterFactory
             $cache = 'tmp/route';
         }
 
-        return new Router(null, null, [
+        return new FastRouteRouter(null, null, [
             FastRouteRouter::CONFIG_CACHE_ENABLED => !is_null($cache),
             FastRouteRouter::CONFIG_CACHE_FILE => $cache
         ]);

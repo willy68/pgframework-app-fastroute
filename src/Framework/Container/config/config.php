@@ -22,7 +22,6 @@ use Framework\Renderer\TwigRendererFactory;
 use Framework\ActiveRecord\ActiveRecordFactory;
 use Framework\Environnement\Environnement;
 use Framework\Invoker\InvokerFactory;
-use Framework\Router\Router;
 use Framework\Validator\Filter\StriptagsFilter;
 use Framework\Validator\Filter\TrimFilter;
 use Framework\Validator\Validation\{
@@ -41,6 +40,7 @@ use Framework\Validator\Validation\{
     NotEmptyValidation
 };
 use Invoker\Invoker;
+use Mezzio\Router\FastRouteRouter;
 use Mezzio\Router\RouteCollector;
 use Mezzio\Router\RouterInterface;
 use Tuupola\Middleware\JwtAuthentication;
@@ -88,7 +88,7 @@ return [
     JwtAuthentication::class => factory(JwtMiddlewareFactory::class),
     Invoker::class => factory(InvokerFactory::class),
     RouterInterface::class => factory(FastRouteRouterFactory::class),
-    Router::class => factory(FastRouteRouterFactory::class),
+    FastRouteRouter::class => factory(FastRouteRouterFactory::class),
     'duplicate.route' => true,
     RouteCollector::class => \DI\autowire()
         ->constructorParameter("detectDuplicates", \DI\get('duplicate.route')),

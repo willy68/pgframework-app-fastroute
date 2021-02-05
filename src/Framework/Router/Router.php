@@ -2,10 +2,10 @@
 
 namespace Framework\Router;
 
-use Framework\Router\RouteGroup;
+use Mezzio\Router\RouteGroup;
+use Mezzio\Router\RouteResult;
 use Mezzio\Router\FastRouteRouter;
 use Psr\Http\Message\ServerRequestInterface;
-use Mezzio\Router\RouteResult;
 
 class Router extends FastRouteRouter
 {

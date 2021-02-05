@@ -3,7 +3,7 @@
 namespace Framework\Router\Loader;
 
 use ReflectionMethod;
-use Framework\Router\Route;
+use Mezzio\Router\Route;
 use Mezzio\Router\RouteCollector;
 use Doctrine\Common\Annotations\Reader;
 use Framework\Router\Parser\PhpTokenParser;

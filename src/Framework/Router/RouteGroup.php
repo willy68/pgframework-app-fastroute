@@ -2,9 +2,9 @@
 
 namespace Framework\Router;
 
-use Framework\Router\Route;
+use Mezzio\Router\Route;
+use Mezzio\Router\RouteInterface;
 use Mezzio\Router\RouterInterface;
-use Mezzio\Router\Route as RouterRoute;
 use Mezzio\Router\RouteCollectionTrait;
 use Mezzio\Router\Middleware\Stack\MiddlewareAwareStackTrait;
 
@@ -56,9 +56,7 @@ class RouteGroup
     public function __construct(string $prefix, callable $callable, RouterInterface $router)
     {
         $this->prefix = $prefix;
-        $this->callable = $callable;
-        $this->router = $router;
-    }
+        use Framework\Router\Route;
 
     /**
      * Run $callable
@@ -77,12 +75,13 @@ class RouteGroup
      * @param string|callable $callable
      * @param string|null $name
      * @param array|null $method
-     * @return Route
+     * @return RouteInterface
      */
-    public function addRoute(RouterRoute $route): RouterRoute
+    public function addRoute(Route $route): Route
     {
         $uri = $route->getPath();
         $path  = ($uri === '/') ? $this->prefix : $this->prefix . sprintf('/%s', ltrim($uri, '/'));
+        /** @var Route $route */
         $route->setPath($path);
 
         $name = $route->getName();
@@ -90,11 +89,11 @@ class RouteGroup
         if ($name === null) {
             $name = ($method === null) ? $this->prefix . $path : $this->prefix . $path . '^' . join(':', $method);
         }
+        $route->setName($name);
+
+        $route->setParentGroup($this);
 
         $route = $this->router->addRoute($route);
-
-        /** @var Route $route */
-        $route->setParentGroup($this);
         return $route;
     }
 
