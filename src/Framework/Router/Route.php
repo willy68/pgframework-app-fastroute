@@ -4,6 +4,7 @@ namespace Framework\Router;
 
 use Framework\Router\RouteGroup;
 use Mezzio\Router\Route as RouterRoute;
+use Mezzio\Router\RouteGroup as RouterRouteGroup;
 
 class Route extends RouterRoute
 {
@@ -34,7 +35,7 @@ class Route extends RouterRoute
      *
      * @return Route
      */
-    public function setParentGroup(RouteGroup $group): self
+    public function setParentGroup(RouterRouteGroup $group): self
     {
         $this->group = $group;
         $prefix      = $this->group->getPrefix();
