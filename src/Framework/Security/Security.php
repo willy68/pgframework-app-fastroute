@@ -54,7 +54,7 @@ class Security
      * @param int $length random bytes length default 16
      * @return string length = 40 (hash_hmac sha1) + $length (default 16) = 56
      */
-    public function createToken(int $length = Security::TOKEN_VALUE_LENGTH): string
+    public static function createToken(int $length = Security::TOKEN_VALUE_LENGTH): string
     {
         $value = Security::randomBytes($length);
 
@@ -125,6 +125,10 @@ class Security
     public static function verifyToken(string $token, int $length = Security::TOKEN_VALUE_LENGTH): bool
     {
         $decoded = base64_decode($token, true);
+
+        if (strlen($decoded) <= $length) {
+            return false;
+        }
 
         $key = substr($decoded, 0, $length);
         $hmac = substr($decoded, $length);

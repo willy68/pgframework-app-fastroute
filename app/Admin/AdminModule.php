@@ -3,16 +3,16 @@
 namespace App\Admin;
 
 use Framework\Module;
-use Grafikart\Csrf\CsrfMiddleware;
 use Mezzio\Router\RouterInterface;
-use Mezzio\Router\FastRouteRouter as Router;
 use App\Blog\Actions\PostCrudAction;
 use Framework\Renderer\TwigRenderer;
 use Framework\Auth\LoggedInMiddleware;
 use App\Blog\Actions\CategoryCrudAction;
 use Framework\Renderer\RendererInterface;
 use App\Auth\Middleware\ForbidenMiddleware;
+use Mezzio\Router\FastRouteRouter as Router;
 use Framework\Middleware\InvalidCsrfMiddleware;
+use Framework\Middleware\CsrfGetCookieMiddleware;
 use Framework\Auth\Middleware\CookieLoginMiddleware;
 
 class AdminModule extends Module
@@ -37,13 +37,13 @@ class AdminModule extends Module
             ->middleware(CookieLoginMiddleware::class)
             ->middleware(LoggedInMiddleware::class)
             ->middleware(InvalidCsrfMiddleware::class)
-            ->middleware(CsrfMiddleware::class);
+            ->middleware(CsrfGetCookieMiddleware::class);
         $router->crud("$prefix/categories", CategoryCrudAction::class, 'blog.admin.category')
             ->middleware(ForbidenMiddleware::class)
             ->middleware(CookieLoginMiddleware::class)
             ->middleware(LoggedInMiddleware::class)
             ->middleware(InvalidCsrfMiddleware::class)
-            ->middleware(CsrfMiddleware::class);
+            ->middleware(CsrfGetCookieMiddleware::class);
         if ($renderer instanceof TwigRenderer) {
             $renderer->getTwig()->addExtension($adminTwigExtension);
         }

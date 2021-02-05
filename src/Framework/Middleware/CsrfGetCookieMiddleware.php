@@ -6,27 +6,30 @@ use Dflydev\FigCookies\SetCookie;
 use Grafikart\Csrf\CsrfMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use Dflydev\FigCookies\FigRequestCookies;
 use Dflydev\FigCookies\FigResponseCookies;
+use Framework\Security\Security;
+use Grafikart\Csrf\NoCsrfException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class CsrfGetCookieMiddleware implements MiddlewareInterface
 {
 
-    /**
-     * Undocumented variable
-     *
-     * @var CsrfMiddleware
-     */
-    private $csrfMiddleware;
+    protected $config = [
+        'cookieName' => 'XSRF-TOKEN',
+        'header' => 'X-CSRF-TOKEN',
+        'field' => '_csrf',
+        'expiry' => 0,
+        'secure' => false,
+        'httponly' => false,
+        'samesite' => null,
+    ];
 
-    /**
-     * CsrfGetCookieMiddleware constructor.
-     * @param CsrfMiddleware $csrfMiddleware
-     */
-    public function __construct(CsrfMiddleware $csrfMiddleware)
+    protected $tokenField;
+
+    public function __construct()
     {
-        $this->csrfMiddleware = $csrfMiddleware;
     }
 
     /**
@@ -37,32 +40,74 @@ class CsrfGetCookieMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $method = $request->getMethod();
-        if (\in_array($method, ['DELETE', 'PATCH', 'POST', 'PUT'], true)) {
-            if (!$request->hasHeader('X-CSRF-TOKEN')) {
-                return $handler->handle($request);
-            }
-            $params = $request->getParsedBody() ?: [];
-            $token = $request->getHeader('X-CSRF-TOKEN')[0];
-            $request = $request->withParsedBody(
-                array_merge($params, [$this->csrfMiddleware->getFormKey() => $token])
-            );
-            return $handler->handle($request);
+        //dd($method);
+
+        $cookie = FigRequestCookies::get($request, $this->config['cookieName'])->getValue();
+        $this->tokenField = $cookie;
+
+        if (is_string($cookie) && strlen($cookie) > 0) {
+            $request = $request->withAttribute('_csrf', $cookie);
         }
 
-        if (\in_array($method, ['GET', 'HEAD'], true)) {
+        if (\in_array($method, ['GET', 'HEAD'], true) && null === $cookie) {
+
+            $token = $this->generateToken();
+            $request = $request->withAttribute($this->config['field'], $token);
+
             $response = $handler->handle($request);
-            if (!FigResponseCookies::get($response, 'XSRF-TOKEN')->getValue()) {
-                $setCookie = SetCookie::create('XSRF-TOKEN')
-                    ->withValue($this->csrfMiddleware->generateToken())
-                    // ->withExpires(time() + 3600)
-                    ->withPath('/')
-                    ->withDomain(null)
-                    ->withSecure(false)
-                    ->withHttpOnly(false);
-                $response = FigResponseCookies::set($response, $setCookie);
-            }
-            return $response;
+
+            $setCookie = SetCookie::create('XSRF-TOKEN')
+                ->withValue($token)
+                // ->withExpires(time() + 3600)
+                ->withPath('/')
+                ->withDomain(null)
+                ->withSecure(false)
+                ->withHttpOnly(false);
+            return FigResponseCookies::set($response, $setCookie);
         }
+
+        if (\in_array($method, ['DELETE', 'PATCH', 'POST', 'PUT'], true)) {
+            $body = $request->getParsedBody();
+            if ((\is_array($body) || $body instanceof \ArrayAccess) && !empty($body)) {
+                $token = $body[$this->config['field']];
+                $this->validateToken($token, $cookie);
+                return $handler->handle($request);
+            }
+
+            if (!$request->hasHeader($this->config['header'])) {
+                throw new NoCsrfException('Le cookie Crsf n\'existe pas ou est incorrect');
+            }
+            $headerCookie = $request->getHeaderLine($this->config['header']);
+            $this->validateToken($headerCookie, $cookie);
+        }
+
         return $handler->handle($request);
+    }
+
+    protected function validateToken($token, $cookie)
+    {
+        if (!$cookie) {
+            throw new NoCsrfException('Le cookie Crsf n\'existe pas ou est incorrect');
+        }
+
+        $cookie = Security::unsaltToken($cookie);
+        if (!Security::verifyToken($cookie)) {
+            throw new NoCsrfException('Le cookie Crsf est incorrect');
+        }
+
+        $csrfField = Security::unsaltToken($token);
+        if (!hash_equals($csrfField, $cookie)) {
+            throw new NoCsrfException('Le cookie Crsf est incorrect');
+        }
+    }
+
+    public function getFormKey(): string
+    {
+        return $this->config['field'];
+    }
+
+    public function generateToken(): string
+    {
+        return $this->tokenField;
     }
 }

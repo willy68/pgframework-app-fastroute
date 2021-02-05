@@ -21,9 +21,9 @@ return [
         DemoModule::class,
         AdminModule::class,
         BlogModule::class,
-        AuthModule::class
-        //ApiModule::class,
-        //ApiClientModule::class
+        AuthModule::class,
+        ApiModule::class,
+        ApiClientModule::class,
     ],
 
     /* Base middlewares PageNotFound must be the last.
@@ -36,7 +36,7 @@ return [
         ApiOptionsMiddleware::class,
         MethodNotAllowedMiddleware::class,
         DispatcherMiddleware::class,
-        PageNotFoundMiddleware::class
+        PageNotFoundMiddleware::class,
     ],
 
     /* DI Base configuration. Place your own on the list */
@@ -44,6 +44,6 @@ return [
         dirname(dirname(__DIR__)) . '/config/config.php',
         dirname(dirname(__DIR__)) . '/config/router.php',
         dirname(dirname(__DIR__)) . '/config/database.php',
-        dirname(dirname(__DIR__)) . '/config/twig.php'
+        dirname(dirname(__DIR__)) . '/config/twig.php',
     ]
 ];
