@@ -34,7 +34,7 @@ class EntrepriseController extends AbstractApiController
         $options = [];
         $params = $request->getAttributes();
         $options = $this->getQueryOption($request, $options);
-        if ($params[$this->foreignKey]) {
+        if (isset($params[$this->foreignKey])) {
             $options['joins'] = ['administrateurs'];
             $options['conditions'] = [
                 "`administrateur`." . $this->foreignKey . " = ?",
