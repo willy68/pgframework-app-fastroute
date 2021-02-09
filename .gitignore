@@ -48,3 +48,4 @@ database.php
 routes.xml
 tmp
 /.vs/slnx.sqlite
+node_modules
