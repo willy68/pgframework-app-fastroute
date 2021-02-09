@@ -49,3 +49,5 @@ routes.xml
 tmp
 /.vs/slnx.sqlite
 node_modules
+public/assets/js/*
+!public/assets/js/.gitkeep
