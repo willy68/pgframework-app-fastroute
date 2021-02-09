@@ -8,9 +8,9 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     // directory where compiled assets will be stored
-    .setOutputPath('public/build/')
+    .setOutputPath('public/assets/js/')
     // public path used by the web server to access the output path
-    .setPublicPath('/build')
+    .setPublicPath('/public/assets/js')
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
@@ -34,6 +34,12 @@ Encore
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
 
+    .enableReactPreset()
+
+    .configureBabel(function(babelConfig) {
+      babelConfig.plugins.push("@babel/plugin-proposal-class-properties");
+    })
+
     /*
      * FEATURE CONFIG
      *
@@ -45,13 +51,13 @@ Encore
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
-    //.enableVersioning(Encore.isProduction())
+    .enableVersioning(Encore.isProduction())
 
     // enables @babel/preset-env polyfills
-    .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = 3;
-    })
+    //.configureBabelPresetEnv((config) => {
+    //    config.useBuiltIns = 'usage';
+    //    config.corejs = 3;
+    //})
 
     // enables Sass/SCSS support
     //.enableSassLoader()
@@ -67,7 +73,7 @@ Encore
     //.autoProvidejQuery()
 
     // uncomment if you use API Platform Admin (composer require api-admin)
-    .enableReactPreset()
+    //.enableReactPreset()
     //.addEntry('admin', './assets/admin.js')
 ;
 
