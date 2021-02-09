@@ -10,7 +10,7 @@ Encore
     // directory where compiled assets will be stored
     .setOutputPath('public/assets/js/')
     // public path used by the web server to access the output path
-    .setPublicPath('/public/assets/js')
+    .setPublicPath('/assets/js')
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
