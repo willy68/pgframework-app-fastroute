@@ -59,7 +59,7 @@ HTML;
         if (!empty($entryPoints) && array_key_exists('js', $entryPoints)) {
             foreach($entryPoints['css'] as $tag) {
                 $tags .= <<<HTML
-        <link href="{$tag}" rel="stylesheet"></link>\n
+        <link href="{$tag}" rel="stylesheet">\n
 HTML;
             }
         }

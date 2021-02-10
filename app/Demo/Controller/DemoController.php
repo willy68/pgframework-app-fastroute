@@ -46,4 +46,55 @@ class DemoController
         $params = array_merge($request->getServerParams(), $user_array, [$mysql_ver], [$query->__toString()]);
         return $renderer->render('@demo/index', compact('params'));
     }
+
+    /**
+     * @Route("/react", name="demo.react", methods={"GET"})
+     *
+     * @param RendererInterface $renderer
+     * @return string
+     */
+    public function demoReact(RendererInterface $renderer): string
+    {
+        $data = [
+            [
+                'code_client' => 'CL0009',
+                'civilite' => '',
+                'nom' => 'ASSOCIATION DES SANS CLAVIER',
+                'email' => 'ass.sansclavier@free.fr',
+                'adresses' => [
+                    [
+                        'adresse_1' => '8 rue du bout du monde',
+                        'adresse_2' => '',
+                        'adresse_3' => '',
+                        'cp' => '78011',
+                        'ville' => 'Loin en campagne',
+                        'pays' => ''
+                    ]
+                ]
+            ],
+            [
+                'code_client' => 'CL0010',
+                'civilite' => 'Mr',
+                'nom' => 'Dubois',
+                'email' => 'dubois@gmail.com',
+                'adresses' => [
+                    [
+                        'adresse_1' => '4, boulevard des capucines',
+                        'adresse_2' => '',
+                        'adresse_3' => '',
+                        'cp' => '78009',
+                        'ville' => 'FLEURI AUX BOIS',
+                        'pays' => ''
+                    ]
+                ]
+            ]
+        ];
+       /* $json = join(',', array_map(function ($record) {
+            return json_encode($record);
+        }, $data));
+        $data = '[' . $json . ']';*/
+        $data = json_encode($data);
+        //dd($data);
+        return $renderer->render('@demo/react', compact('data'));
+    }
 }

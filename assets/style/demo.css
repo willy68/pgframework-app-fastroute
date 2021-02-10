@@ -1,0 +1,35 @@
+.table-sheet tr.active td {
+  background-color:#4285f4 !important;
+  color: white;
+}
+
+.table-sheet tr td {
+  cursor: pointer;
+}
+
+.fixed-header{
+  display: block;
+  overflow-y: auto;
+  height: 25em;
+}
+
+.fixed-header thead {
+  position: sticky;
+  top: 0;
+  background: whitesmoke;
+  border-top: none;
+  border-bottom: none;
+  box-shadow: 0px 1px 0 #dee2e6;
+}
+
+.ft-08 {
+  font-size: 0.8rem;
+}
+
+.ft-09 {
+  font-size: 0.9rem;
+}
+
+.fw-400 {
+  font-weight: 400;
+}
