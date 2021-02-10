@@ -1,27 +1,99 @@
-import React, { useState, useRef }  from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export default function HighlightRow(props) {
+  let scrollTop = 0;
+  let cancelScroll = false;
+  let startIndex = 0;
 
   const [selectedRow, setSelectedRow] = useState(-1);
-  //const [thead, setThead] = useState(null);
-  //const [cancelScroll, setCancelScroll] = useState(false);
 
   const el = useRef();
-  const tbody = useRef(null);
-  //const trCollection = useRef(null);
+  const tbody = useRef();
 
-  function handleKeyboard(e){
+  useEffect(() => {
+
+    if (el && el.current) {
+      document.addEventListener('keydown', handleKeyboardEvent);
+
+      return function cleanup() {
+        document.removeEventListener('keydown', handleKeyboardEvent);
+      }
+
+    }
+  }, [selectedRow]);
+
+  function handleKeyboardEvent(e) {
+    e.preventDefault();
     console.log(e);
-    console.log(tbody);
-    //setSelectedRow(index);
+    if (tbody && tbody.current) {
+      const trCollection = tbody.current.getElementsByTagName('tr');
+      if (trCollection.length === 0) {
+        return;
+      }
+      let selected = selectedRow;
+      console.log(selected);
+      switch (e.code) {
+        case 'ArrowUp':
+          if (selected === 0 || selected === -1) {
+            selected = trCollection.length;
+          }
+          selected--;
+          //changeSelect(selected);
+          break;
+        case 'ArrowDown':
+          if (selected === trCollection.length - 1) {
+            selected = -1;
+          }
+          selected++;
+          //changeSelect(selected);
+          break;
+        case 'Enter':
+          if (selected !== -1) {
+            //selectItem(selected);
+          }
+          break;
+        default:
+          break;
+      }
+      setSelectedRow(selected);
+    }
+  }
+
+  function handleMouseClick(event) {
+    let index = selectedRow;
+    event.preventDefault();
+    console.log(event);
+    if (tbody && tbody.current) {
+      const trCollection = tbody.current.getElementsByTagName('tr');
+      if (trCollection.length === 0) {
+        return;
+      }
+
+      if (trCollection[0].rowIndex > 0) {
+        startIndex = trCollection[0].rowIndex;
+      }
+
+      let tr = event.target;
+        while (tr.tagName !== 'TR') {
+          tr = tr.parentElement;
+        }
+        index = tr.rowIndex - startIndex;
+        setSelectedRow(index);
+    }
+  }
+
+  function changeSelect(selected) {
+    cancelScroll = true;
+    doScroll(selected);
+    //selectChange.emit(selectedRow);
   }
 
   const clients = props.clients;
   const clientRow = clients.map((client, i) => {
-    return (<TrSelectable 
-            key={client.code_client} 
-            index={i} 
-            isActive={selectedRow === i}>
+    return (<TrSelectable
+      key={client.code_client}
+      index={i}
+      isActive={selectedRow === i}>
       <td>{client.code_client}</td>
       <td>{client.nom}</td>
       <td>{client.email}</td>
@@ -30,65 +102,10 @@ export default function HighlightRow(props) {
     </TrSelectable>);
   });
 
-  function handleKeyboardEven(event) {
-    if (!trCollection || trCollection.length === 0) {
-      trCollection = tbody[0].getElementsByTagName('tr');
-      if (trCollection.length === 0) {
-        return;
-      }
-    }
-    const index = selectedRow;
-    let selected = selectedRow;
-    switch (event.code) {
-      case 'ArrowUp':
-        if (selected === 0 || selected === -1) {
-          selected = trCollection.length;
-        }
-        selected--;
-        //changeSelect(index);
-        break;
-      case 'ArrowDown':
-        if (selected === trCollection.length - 1) {
-          selected = -1;
-        }
-        selected++;
-        //changeSelect(index);
-        break;
-      case 'Enter':
-        if (selected !== -1) {
-          //selectItem(selected);
-        }
-        break;
-      default:
-        break;
-    }
-  }
-
-  function changeSelect(prevIndex) {
-    disableClass(prevIndex);
-    setClickedRow(selectedRow);
-    cancelScroll = true;
-    doScroll(this.selectedRow);
-    //selectChange.emit(selected);
-  }
-
-  function setClickedRow(index) {
-    if (index > -1 && index < this.trCollection.length) {
-      this.renderer.addClass(this.trCollection[index], 'active');
-    }
-  }
-
-  function disableClass(index) {
-    if (index > -1 && index < this.trCollection.length) {
-      this.renderer.removeClass(this.trCollection[index], 'active');
-    }
-  }
-
   return (
-    <div className="fixed-header ft-09" 
-      height="19em" 
-      ref={el} 
-      onKeyDown={handleKeyboard} tabIndex="-1">
+    <div className="fixed-header ft-09"
+      height="19em"
+      ref={el} onClick={handleMouseClick}>
       <table className="table table-hover table-sheet table-sm">
         <TheadFixed>
           <tr>
@@ -106,70 +123,32 @@ export default function HighlightRow(props) {
     </div>
   );
 
-  /*  
-    ngOnInit = function () {
-      let height = '25em';
-      if (this.height) {
-        height = this.height;
-      }
-      this.renderer.setStyle(this.el.nativeElement, 'height', height);
-      this.tbody = this.el.nativeElement.getElementsByTagName('tbody');
-      this.thead = this.el.nativeElement.getElementsByTagName('thead');
-      if (this.tbody.length > 0) {
-        this.trCollection = this.tbody[0].getElementsByTagName('tr');
-      }
-      this.selectedRow = -1;
-    }
-    trCollection: any;
-    tbody: any;
-    thead: any;
-    scrollTop = 0;
-    cancelScroll = false;
-    startIndex = 0;
-    selectedRow: number;
+  /*
   
-    this.handleMouseClick = function (event) {
-      const index = this.selectedRow;
-      if (!this.trCollection || this.trCollection.length === 0) {
-        this.trCollection = this.tbody[0].getElementsByTagName('tr');
-        if (this.trCollection.length === 0) {
+    function handleMouseClick(event) {
+      const index = selectedRow;
+      e.preventDefault();
+      console.log(e);
+      if (tbody && tbody.current) {
+        const trCollection = tbody.current.getElementsByTagName('tr');
+        if (trCollection.length === 0) {
           return;
         }
       }
   
-      if (this.trCollection[0].rowIndex > 0) {
-        this.startIndex = this.trCollection[0].rowIndex;
+      if (trCollection[0].rowIndex > 0) {
+        startIndex = trCollection[0].rowIndex;
       }
   
       let tr = event.target;
       while (tr.tagName !== 'TR') {
         tr = tr.parentElement;
       }
-      this.selectedRow = tr.rowIndex - this.startIndex;
+      selectedRow = tr.rowIndex - startIndex;
       this.changeSelect(index);
     }
   
-    changeSelect = function (prevIndex) {
-      this.disableClass(prevIndex);
-      this.setClickedRow(this.selectedRow);
-      this.cancelScroll = true;
-      this.doScroll(this.selectedRow);
-      this.selectChange.emit(this.selectedRow);
-    }
-  
-    setClickedRow = function (index) {
-      if (index > -1 && index < this.trCollection.length) {
-        this.renderer.addClass(this.trCollection[index], 'active');
-      }
-    }
-  
-    disableClass = function (index) {
-      if (index > -1 && index < this.trCollection.length) {
-        this.renderer.removeClass(this.trCollection[index], 'active');
-      }
-    }
-  
-    handleScroll = function (event) {
+    function handleScroll(event) {
   
       if (this.cancelScroll && this.scrollTop !== event.target.scrollTop) {
         event.target.scrollTop = this.scrollTop;
@@ -177,11 +156,11 @@ export default function HighlightRow(props) {
       }
     }
   
-    doScroll = function (index) {
+    function doScroll(index) {
       const scrollBody = document.getElementsByClassName('fixed-header');
       if (!scrollBody.length) { return; }
   
-      let scrollBodyEl;
+      let scrollBodyEl; 
       let theadHeight = 0;
       const theadFixed = this.thead[0];
       if (theadFixed) {
@@ -199,7 +178,7 @@ export default function HighlightRow(props) {
       }
     }
   
-    handleMouseDblClick = function (event) {
+    function handleMouseDblClick(event) {
       const index = this.selectedRow;
       if (!this.trCollection || this.trCollection.length === 0) {
         this.trCollection = this.tbody[0].getElementsByTagName('tr');
@@ -230,8 +209,7 @@ export default function HighlightRow(props) {
 
 }
 
-function TheadFixed(props)
-{
+function TheadFixed(props) {
   return (
     <thead>
       {props.children}
@@ -239,17 +217,10 @@ function TheadFixed(props)
   );
 }
 
-function TrSelectable(props)
-{
-
-  function handleKeyboard(e) {
-    props.onKeyDown(e, props.index);
-  }
-
+function TrSelectable(props) {
   return (
-    <tr className={props.isActive ? 'active' : ''} tabIndex="0">
+    <tr className={props.isActive ? 'active' : ''}>
       {props.children}
     </tr>
   );
-
 }
