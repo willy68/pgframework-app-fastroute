@@ -11,7 +11,8 @@ use Framework\Twig\{
     TextExtension,
     TimeExtension,
     FlashExtension,
-    PagerFantaExtension
+    PagerFantaExtension,
+    WebpackExtension
 };
 use Framework\Router\FastRouteRouterFactory;
 use Framework\Router\RouterTwigExtension;
@@ -62,6 +63,7 @@ return [
         get(FlashExtension::class),
         get(FormExtension::class),
         get(CsrfExtension::class),
+        get(WebpackExtension::class),
     ],
     'form.validations' => \DI\add([
         'required' => RequiredValidation::class,

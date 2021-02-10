@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import ButtonLike from "./components/ButtonLike";
+import './style/app.css';
 
 document.querySelectorAll('span.react-like').forEach(span => {
   const likes = +span.dataset.likes;
