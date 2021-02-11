@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import TrSelectable from './TrSelectable';
 
 export default function HighlightRow(props) {
   let startIndex = 0;
