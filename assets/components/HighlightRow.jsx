@@ -63,7 +63,12 @@ export default function HighlightRow(props) {
     let index = selectedRow;
     event.preventDefault();
     console.log(event);
-    if (tbody && tbody.current) {
+
+    let tr = event.target;
+    while (tr && tr.tagName !== 'TR') {
+      tr = tr.parentElement;
+    }
+    if (tr && tbody && tbody.current) {
       const trCollection = tbody.current.getElementsByTagName('tr');
       if (trCollection.length === 0) {
         return;
@@ -73,12 +78,8 @@ export default function HighlightRow(props) {
         startIndex = trCollection[0].rowIndex;
       }
 
-      let tr = event.target;
-        while (tr.tagName !== 'TR') {
-          tr = tr.parentElement;
-        }
-        index = tr.rowIndex - startIndex;
-        setSelectedRow(index);
+      index = tr.rowIndex - startIndex;
+      setSelectedRow(index);
     }
   }
 
