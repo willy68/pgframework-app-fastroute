@@ -3,6 +3,7 @@
 namespace App\Demo\Controller;
 
 use App\Auth\Models\User;
+use App\Models\Client;
 use Framework\Router\Annotation\Route;
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,8 +23,8 @@ class DemoController
      * 
      * @Route("/", name="demo.index", methods={"GET"})
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Framework\Renderer\RendererInterface $renderer
+     * @param ServerRequestInterface $request
+     * @param RendererInterface $renderer
      * @param \PDO $pdo
      * @return string
      */
@@ -50,12 +51,14 @@ class DemoController
     /**
      * @Route("/react", name="demo.react", methods={"GET"})
      *
+     * @param ServerRequestInterface $request
      * @param RendererInterface $renderer
      * @return string
      */
-    public function demoReact(RendererInterface $renderer): string
+    public function demoReact(
+        ServerRequestInterface $request, RendererInterface $renderer): string
     {
-        $data = [
+       /* $data = [
             [
                 'code_client' => 'CL0009',
                 'civilite' => '',
@@ -89,12 +92,13 @@ class DemoController
                 ]
             ]
         ];
-       /* $json = join(',', array_map(function ($record) {
-            return json_encode($record);
-        }, $data));
-        $data = '[' . $json . ']';*/
-        $data = json_encode($data);
-        //dd($data);
+        $data = json_encode($data);*/
+        /** @var Client[] $clients */
+        $clients = Client::all(["include" => ["adresses"]]);
+        $json = join(',', array_map(function ($client) {
+             return $client->to_json(["include" => "adresses"]);
+         }, $clients));
+         $data = '[' . $json . ']';
         return $renderer->render('@demo/react', compact('data'));
     }
 }
