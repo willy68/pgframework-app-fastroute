@@ -17,7 +17,8 @@ export default function ClientsList(props) {
   }
 
   function handleFire(index) {
-    console.log(clients[index]);
+    const url = `/demo/client/${clients[index].id}`;
+    window.location.assign(url);
   }
 
   return (

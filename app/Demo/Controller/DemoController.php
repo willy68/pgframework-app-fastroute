@@ -2,11 +2,13 @@
 
 namespace App\Demo\Controller;
 
+use App\Models\Client;
 use App\Auth\Models\User;
 use Framework\Router\Annotation\Route;
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Framework\Validator\Validation\ValidationRules;
+use Framework\Invoker\Annotation\ParameterConverter;
 use Framework\Database\ActiveRecord\ActiveRecordQuery;
 
 class DemoController
@@ -56,5 +58,20 @@ class DemoController
     public function demoReact(RendererInterface $renderer): string
     {
         return $renderer->render('@demo/react');
+    }
+
+    /**
+     * @Route("/demo/client/{id:\d+}", name="demo.client", methods={"GET"})
+     *
+     * @ParameterConverter("client", options={"id"="id", "include"="adresses"})
+     * 
+     * @param \App\Models\Client $client
+     * @param \Framework\Renderer\RendererInterface $renderer
+     * @return string
+     */
+    public function demoClient(Client $client, RendererInterface $renderer): string
+    {
+        $client = $client->to_array(['include' => 'adresses']);
+        return $renderer->render('@demo/client', compact('client'));
     }
 }
