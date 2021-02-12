@@ -93,6 +93,7 @@ export default function HighlightRow(props) {
 
   function handleMouseDblClick(e) {
     let index = selectedRow;
+    e.preventDefault();
 
     let tr = e.target;
     while (tr && tr.tagName !== 'TR') {
