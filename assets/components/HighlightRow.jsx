@@ -157,12 +157,12 @@ export default function HighlightRow(props) {
     scrollBodyEl = scrollBody[0];
     const rowEl = trCollection[index];
     if (rowEl.offsetTop < scrollBodyEl.scrollTop + theadHeight) {
-      setScrollTop(rowEl.offsetTop - theadHeight);
       scrollBodyEl.scrollTop = rowEl.offsetTop - theadHeight;
+      setScrollTop(rowEl.offsetTop - theadHeight);
     } else if ((rowEl.offsetTop + rowEl.offsetHeight + theadHeight) >
       (scrollBodyEl.scrollTop + scrollBodyEl.offsetHeight)) {
-      setScrollTop(rowEl.offsetTop + rowEl.offsetHeight + theadHeight - scrollBodyEl.offsetHeight);
       scrollBodyEl.scrollTop = rowEl.offsetTop + rowEl.offsetHeight + theadHeight - scrollBodyEl.offsetHeight;
+      setScrollTop(rowEl.offsetTop + rowEl.offsetHeight + theadHeight - scrollBodyEl.offsetHeight);
     }
   }
 
