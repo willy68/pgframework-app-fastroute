@@ -3,7 +3,6 @@
 namespace App\Demo\Controller;
 
 use App\Auth\Models\User;
-use App\Models\Client;
 use Framework\Router\Annotation\Route;
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface;
