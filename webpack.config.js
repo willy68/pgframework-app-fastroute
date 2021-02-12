@@ -39,6 +39,7 @@ Encore
 
     .configureBabel(function(babelConfig) {
       babelConfig.plugins.push("@babel/plugin-proposal-class-properties");
+      babelConfig.plugins.push("@babel/plugin-transform-runtime");
     })
 
     /*

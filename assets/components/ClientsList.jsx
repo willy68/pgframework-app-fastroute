@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { findClients } from '../functions/api';
 import HighlightRow from './HighlightRow';
 import TrSelectable from './TrSelectable';
 
 export default function ClientsList(props) {
-  const clients = props.clients;
-
   const [selectedRow, setSelectedRow] = useState(-1);
+  const [clients, setClients] = useState(null);
+
+  useEffect(async () => {
+    const clients = await findClients();
+    setClients(clients);
+  }, [])
 
   function handleSelect(index) {
     setSelectedRow(index);
@@ -14,18 +19,6 @@ export default function ClientsList(props) {
   function handleFire(index) {
     console.log(clients[index]);
   }
-
-  const clientRow = clients.map((client, i) => {
-    return (<TrSelectable
-      key={client.code_client}
-      isActive={selectedRow === i}>
-      <td>{client.code_client}</td>
-      <td>{client.nom}</td>
-      <td>{client.email}</td>
-      <td>{client.adresses && client.adresses[0]?.cp} </td>
-      <td>{client.adresses && client.adresses[0]?.ville} </td>
-    </TrSelectable>);
-  });
 
   return (
     <HighlightRow handleSelect={handleSelect} handleFire={handleFire}>
@@ -40,9 +33,21 @@ export default function ClientsList(props) {
           </tr>
         </thead>
         <tbody>
-          {clientRow}
+          {clients ? (clients.map((client, i) => (
+            <TrSelectable
+              key={client.code_client}
+              isActive={selectedRow === i}>
+              <td>{client.code_client}</td>
+              <td>{client.nom}</td>
+              <td>{client.email}</td>
+              <td>{client.adresses && client.adresses[0]?.cp} </td>
+              <td>{client.adresses && client.adresses[0]?.ville} </td>
+            </TrSelectable>))
+            ) : <>
+              </>
+          }
         </tbody>
       </table>
-      </HighlightRow>
+    </HighlightRow>
   );
 }

@@ -51,54 +51,11 @@ class DemoController
     /**
      * @Route("/react", name="demo.react", methods={"GET"})
      *
-     * @param ServerRequestInterface $request
      * @param RendererInterface $renderer
      * @return string
      */
-    public function demoReact(
-        ServerRequestInterface $request, RendererInterface $renderer): string
+    public function demoReact(RendererInterface $renderer): string
     {
-       /* $data = [
-            [
-                'code_client' => 'CL0009',
-                'civilite' => '',
-                'nom' => 'ASSOCIATION DES SANS CLAVIER',
-                'email' => 'ass.sansclavier@free.fr',
-                'adresses' => [
-                    [
-                        'adresse_1' => '8 rue du bout du monde',
-                        'adresse_2' => '',
-                        'adresse_3' => '',
-                        'cp' => '78011',
-                        'ville' => 'Loin en campagne',
-                        'pays' => ''
-                    ]
-                ]
-            ],
-            [
-                'code_client' => 'CL0010',
-                'civilite' => 'Mr',
-                'nom' => 'Dubois',
-                'email' => 'dubois@gmail.com',
-                'adresses' => [
-                    [
-                        'adresse_1' => '4, boulevard des capucines',
-                        'adresse_2' => '',
-                        'adresse_3' => '',
-                        'cp' => '78009',
-                        'ville' => 'FLEURI AUX BOIS',
-                        'pays' => ''
-                    ]
-                ]
-            ]
-        ];
-        $data = json_encode($data);*/
-        /** @var Client[] $clients */
-        $clients = Client::all(["include" => ["adresses"]]);
-        $json = join(',', array_map(function ($client) {
-             return $client->to_json(["include" => "adresses"]);
-         }, $clients));
-         $data = '[' . $json . ']';
-        return $renderer->render('@demo/react', compact('data'));
+        return $renderer->render('@demo/react');
     }
 }
