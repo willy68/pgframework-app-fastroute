@@ -56,7 +56,7 @@ HTML;
     {
         $entryPoints = $this->readJsonFile($this->entryPoints, $entryName);
         $tags = '';
-        if (!empty($entryPoints) && array_key_exists('js', $entryPoints)) {
+        if (!empty($entryPoints) && array_key_exists('css', $entryPoints)) {
             foreach($entryPoints['css'] as $tag) {
                 $tags .= <<<HTML
         <link href="{$tag}" rel="stylesheet">\n
