@@ -2,10 +2,10 @@
 
 namespace Framework\Invoker\ParameterResolver;
 
-use ActiveRecord\RecordNotFound;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionFunctionAbstract;
+use ActiveRecord\Exceptions\RecordNotFound;
 use Invoker\ParameterResolver\ParameterResolver;
 
 class ActiveRecordAnnotationConverter implements ParameterResolver

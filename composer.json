@@ -22,7 +22,7 @@
         "intervention/image": "^2.5",
         "dflydev/fig-cookies": "^3.0",
         "tuupola/slim-jwt-auth": "^3.4",
-        "willy68/php-activerecord-dev": "^1.2",
+        "willy68/php-activerecord-psr-4": "dev-master",
         "symfony/dotenv": "^5.0",
         "cakephp/utility": "^4.1",
         "php-di/invoker": "^2.2",

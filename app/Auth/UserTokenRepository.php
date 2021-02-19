@@ -4,6 +4,7 @@ namespace App\Auth;
 
 use App\Auth\Models\UserToken;
 use Framework\Auth\TokenInterface;
+use ActiveRecord\Exceptions\RecordNotFound;
 use Framework\Auth\Repository\TokenRepositoryInterface;
 
 class UserTokenRepository implements TokenRepositoryInterface
@@ -86,7 +87,7 @@ class UserTokenRepository implements TokenRepositoryInterface
     {
         try {
             $userToken = $this->model::find($id);
-        } catch (\ActiveRecord\RecordNotFound $exception) {
+        } catch (RecordNotFound $exception) {
             return null;
         }
         /** @var \ActiveRecord\Model $userToken*/

@@ -9,6 +9,7 @@ use App\Models\Administrateur;
 use App\Api\AbstractApiController;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
+use ActiveRecord\Exceptions\RecordNotFound;
 use Psr\Http\Message\ServerRequestInterface;
 
 class UserController extends AbstractApiController
@@ -60,7 +61,7 @@ class UserController extends AbstractApiController
             } else {
                 $users = $this->model::all();
             }
-        } catch (\ActiveRecord\RecordNotFound $e) {
+        } catch (RecordNotFound $e) {
             return new Response(404);
         }
         if (empty($users)) {
@@ -84,7 +85,7 @@ class UserController extends AbstractApiController
         }
         try {
             $user = $this->model::find_by_email(['email' => $params['email']]);
-        } catch (\ActiveRecord\RecordNotFound $e) {
+        } catch (RecordNotFound $e) {
         } catch (\Exception $e) {
             return new Response(404);
         }
@@ -149,7 +150,7 @@ class UserController extends AbstractApiController
 
         try {
             $user = $this->model::find($options);
-        } catch (\ActiveRecord\RecordNotFound $e) {
+        } catch (RecordNotFound $e) {
             return new Response(404);
         }
         if (!$user) {

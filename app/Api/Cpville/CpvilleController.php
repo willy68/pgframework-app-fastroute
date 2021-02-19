@@ -6,6 +6,7 @@ use App\Models\Cpville;
 use GuzzleHttp\Psr7\Response;
 use App\Api\AbstractApiController;
 use Psr\Http\Message\ResponseInterface;
+use ActiveRecord\Exceptions\RecordNotFound;
 use Psr\Http\Message\ServerRequestInterface;
 
 class CpvilleController extends AbstractApiController
@@ -51,7 +52,7 @@ class CpvilleController extends AbstractApiController
             } else {
                 $cpville = $this->model::all();
             }
-        } catch (\ActiveRecord\RecordNotFound $e) {
+        } catch (RecordNotFound $e) {
             return new Response(404);
         }
     

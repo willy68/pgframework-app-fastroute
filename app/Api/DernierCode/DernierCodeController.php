@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Response;
 use App\Api\AbstractApiController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use ActiveRecord\Exceptions\ActiveRecordException;
 
 class DernierCodeController extends AbstractApiController
 {
@@ -34,7 +35,7 @@ class DernierCodeController extends AbstractApiController
         }
         try {
             $dernier_code = $this->model::last($options);
-        } catch (\ActiveRecord\ActiveRecordException $e) {
+        } catch (ActiveRecordException $e) {
             return new Response(400);
         }
         if (empty($dernier_code)) {

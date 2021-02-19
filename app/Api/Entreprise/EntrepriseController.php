@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Response;
 use App\Models\Administrateur;
 use App\Api\AbstractApiController;
 use Psr\Http\Message\ResponseInterface;
+use ActiveRecord\Exceptions\RecordNotFound;
 use Psr\Http\Message\ServerRequestInterface;
 
 class EntrepriseController extends AbstractApiController
@@ -47,7 +48,7 @@ class EntrepriseController extends AbstractApiController
             } else {
                 $entreprises = $this->model::all();
             }
-        } catch (\ActiveRecord\RecordNotFound $e) {
+        } catch (RecordNotFound $e) {
             return new Response(404);
         }
         if (empty($entreprises)) {
@@ -75,7 +76,7 @@ class EntrepriseController extends AbstractApiController
             if ($entreprise) {
                 return new Response(400);
             }
-        } catch (\ActiveRecord\RecordNotFound $e) {
+        } catch (RecordNotFound $e) {
         } catch (\Exception $e) {
             return new Response(404);
         }

@@ -6,6 +6,7 @@ use App\Models\Adresse;
 use GuzzleHttp\Psr7\Response;
 use App\Api\AbstractApiController;
 use Psr\Http\Message\ResponseInterface;
+use ActiveRecord\Exceptions\RecordNotFound;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AdresseController extends AbstractApiController
@@ -53,7 +54,7 @@ class AdresseController extends AbstractApiController
             } else {
                 $models = $this->model::all();
             }
-        } catch (\ActiveRecord\RecordNotFound $e) {
+        } catch (RecordNotFound $e) {
             return new Response(404);
         }
         if (empty($models)) {

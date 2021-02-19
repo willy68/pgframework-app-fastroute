@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Framework\Renderer\RendererInterface;
+use ActiveRecord\Exceptions\RecordNotFound;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -33,7 +34,7 @@ class RecordNotFoundMiddleware implements MiddlewareInterface
         try {
             return $handler->handle($request);
         }
-        catch(\ActiveRecord\RecordNotFound $e) {
+        catch(RecordNotFound $e) {
             return new Response(404, [], $this->renderer->render(
                 'error404',
                 ['message' => $e->getMessage()])
