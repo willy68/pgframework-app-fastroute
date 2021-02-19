@@ -3,17 +3,17 @@ pgframework with fastroute and route annotation
 
 ## Commande après git clone
 **lignes de commande**
-<code>
-composer run-script post-root-package-install .
-composer run-script post-create-project-cmd .
-yarn .
-</code>
+```
+composer run-script post-root-package-install
+composer run-script post-create-project-cmd
+yarn
+```
 
 ## Test composer create-project
-**lignes de commandes**  
-<code>
-composer create-project --repository-url=../pgframework-app/packages.json --remove-vcs willy68/pgframework-app .
-</code>
+**ligne de commande**  
+```
+composer create-project --repository-url=../pgframework-app/packages.json --remove-vcs willy68/pgframework-app
+```
 
 **Fichier packages.json**  
 ```json
