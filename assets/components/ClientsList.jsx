@@ -11,17 +11,28 @@ export default function ClientsList() {
 
   useEffect(async () => {
     const clients = await findClients();
-    setState(s => ({...s, clients: clients}));
+    setState(s => ({ ...s, clients: clients }));
   }, [])
 
-  function handleSelect(index) {
-    setState(s =>({...s, selectedRow: index }))
+  const handleSelect = function (index) {
+    setState(s => ({ ...s, selectedRow: index }))
   }
 
-  function handleFire(index) {
+  const handleFire = function (index) {
     const url = `/demo/client/${state.clients[index].id}`;
     window.location.assign(url);
   }
+
+  const row = state.clients ? state.clients.map((client, i) => (
+    <TrSelectable
+      key={client.code_client}
+      isActive={state.selectedRow === i}>
+      <td>{client.code_client}</td>
+      <td>{client.nom}</td>
+      <td>{client.email}</td>
+      <td>{client.adresses && client.adresses[0]?.cp} </td>
+      <td>{client.adresses && client.adresses[0]?.ville} </td>
+    </TrSelectable>)) : <></>;
 
   return (
     <HighlightRow handleSelect={handleSelect} handleFire={handleFire}>
@@ -36,19 +47,7 @@ export default function ClientsList() {
           </tr>
         </thead>
         <tbody>
-          {state.clients ? (state.clients.map((client, i) => (
-            <TrSelectable
-              key={client.code_client}
-              isActive={state.selectedRow === i}>
-              <td>{client.code_client}</td>
-              <td>{client.nom}</td>
-              <td>{client.email}</td>
-              <td>{client.adresses && client.adresses[0]?.cp} </td>
-              <td>{client.adresses && client.adresses[0]?.ville} </td>
-            </TrSelectable>))
-            ) : <>
-              </>
-          }
+          {row}
         </tbody>
       </table>
     </HighlightRow>

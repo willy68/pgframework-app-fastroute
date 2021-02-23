@@ -6,9 +6,11 @@ export default function HighlightRow(props) {
   const handleSelect = props.handleSelect;
   const handleFire = props.handleFire;
 
-  const [selectedRow, setSelectedRow] = useState(-1);
-  const [scrollTop, setScrollTop] = useState(0);
-  const [cancelScroll, setCancelScroll] = useState(false);
+  const [state, setState] = useState({
+    selectedRow: -1,
+    scrollTop: 0,
+    cancelScroll: false
+  });
 
   const el = useRef();
 
@@ -22,7 +24,7 @@ export default function HighlightRow(props) {
       }
 
     }
-  }, [selectedRow]);
+  }, [state.selectedRow]);
 
   function handleKeyboardEvent(e) {
     if (el && el.current) {
@@ -31,7 +33,7 @@ export default function HighlightRow(props) {
       if (trCollection.length === 0) {
         return;
       }
-      let index = selectedRow;
+      let index = state.selectedRow;
       switch (e.code) {
         case 'ArrowUp':
           if (index === 0 || index === -1) {
@@ -56,16 +58,15 @@ export default function HighlightRow(props) {
         default:
           break;
       }
-      if (index !== selectedRow) {
-        setSelectedRow(index);
-        scroll(index);
+      if (index !== state.selectedRow) {
+        setState({ selectedRow: index, scrollTop: scroll(index), cancelScroll: true });
         handleSelect(index);
       }
     }
   }
 
   function handleMouseClick(e) {
-    let index = selectedRow;
+    let index = state.selectedRow;
     e.preventDefault();
 
     let tr = e.target;
@@ -85,14 +86,13 @@ export default function HighlightRow(props) {
       }
 
       index = tr.rowIndex - startIndex;
-      setSelectedRow(index);
-      scroll(index);
+      setState({ selectedRow: index, scrollTop: scroll(index), cancelScroll: true });
       handleSelect(index);
     }
   }
 
   function handleMouseDblClick(e) {
-    let index = selectedRow;
+    let index = state.selectedRow;
     e.preventDefault();
 
     let tr = e.target;
@@ -112,8 +112,7 @@ export default function HighlightRow(props) {
       }
 
       index = tr.rowIndex - startIndex;
-      setSelectedRow(index);
-      scroll(index);
+      setState({ selectedRow: index, scrollTop: scroll(index), cancelScroll: true });
       if (index > -1) {
         handleSelect(index);
         handleFire(index);
@@ -123,18 +122,13 @@ export default function HighlightRow(props) {
 
   function handleScroll(e) {
 
-    if (cancelScroll && scrollTop !== e.target.scrollTop) {
-      e.target.scrollTop = scrollTop;
-      setCancelScroll(false);
+    if (state.cancelScroll && state.scrollTop !== e.target.scrollTop) {
+      e.target.scrollTop = state.scrollTop;
+      setState(s => ({ ...s, cancelScroll: false }));
     }
   }
 
   function scroll(index) {
-    setCancelScroll(true);
-    doScroll(index);
-  }
-
-  function doScroll(index) {
     const scrollBody = document.getElementsByClassName('fixed-header');
     if (!scrollBody || scrollBody.length === 0) { return; }
 
@@ -159,12 +153,18 @@ export default function HighlightRow(props) {
     const rowEl = trCollection[index];
     if (rowEl.offsetTop < scrollBodyEl.scrollTop + theadHeight) {
       scrollBodyEl.scrollTop = rowEl.offsetTop - theadHeight;
-      setScrollTop(rowEl.offsetTop - theadHeight);
+
+      return (rowEl.offsetTop - theadHeight);
+
     } else if ((rowEl.offsetTop + rowEl.offsetHeight + theadHeight) >
       (scrollBodyEl.scrollTop + scrollBodyEl.offsetHeight)) {
       scrollBodyEl.scrollTop = rowEl.offsetTop + rowEl.offsetHeight + theadHeight - scrollBodyEl.offsetHeight;
-      setScrollTop(rowEl.offsetTop + rowEl.offsetHeight + theadHeight - scrollBodyEl.offsetHeight);
+
+      return (rowEl.offsetTop + rowEl.offsetHeight + theadHeight - scrollBodyEl.offsetHeight);
+
     }
+
+    return state.scrollTop;
   }
 
   return (
@@ -173,10 +173,8 @@ export default function HighlightRow(props) {
       onClick={handleMouseClick}
       onScroll={handleScroll}
       onDoubleClick={handleMouseDblClick}>
-        {props.children}
+      {props.children}
     </div>
   );
 
 }
-
-
