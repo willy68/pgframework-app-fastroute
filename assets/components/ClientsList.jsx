@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { findClients } from '../functions/api';
 import HighlightRow from './HighlightRow';
 import TrSelectable from './TrSelectable';
@@ -31,16 +31,11 @@ export default function ClientsList() {
 
   const row = useCallback(selectedRow => {
     return (state.clients ? state.clients.map((client, i) => (
-      <TrSelectable
-        key={client.code_client}
-        isActive={selectedRow === i}>
-        <td>{client.code_client}</td>
-        <td>{client.nom}</td>
-        <td>{client.email}</td>
-        <td>{client.adresses && client.adresses[0]?.cp} </td>
-        <td>{client.adresses && client.adresses[0]?.ville} </td>
-      </TrSelectable>)) : <></>);
-    },
+      <RowClient client={client} isActive={selectedRow === i} key={client.code_client} />))
+      :
+      <></>
+    );
+  },
     [state.clients],
   );
 
@@ -63,3 +58,16 @@ export default function ClientsList() {
     </HighlightRow>
   );
 }
+
+const RowClient = memo(({ client, isActive }) => {
+  return (
+    <TrSelectable
+      isActive={isActive}>
+      <td>{client.code_client}</td>
+      <td>{client.nom}</td>
+      <td>{client.email}</td>
+      <td>{client.adresses && client.adresses[0]?.cp} </td>
+      <td>{client.adresses && client.adresses[0]?.ville} </td>
+    </TrSelectable>
+  );
+});
