@@ -123,7 +123,7 @@ export default function HighlightRow({ handleSelect, handleFire, ...props }) {
       e.target.scrollTop = state.scrollTop;
       setState(s => ({ ...s, cancelScroll: false }));
     }
-  }[state.cancelScroll, state.scrollTop]);
+  }, [state.cancelScroll, state.scrollTop]);
 
   const scroll = function (index) {
     if ((!el && !el.current)) {
