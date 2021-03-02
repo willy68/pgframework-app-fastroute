@@ -3,7 +3,7 @@ import { findClients } from '../functions/api';
 import HighlightRow from './HighlightRow';
 import TrSelectable from './TrSelectable';
 
-export default function ClientsList() {
+export default function ClientsList({url}) {
   const [state, setState] = useState({
     clients: null,
     selectedRow: -1
@@ -23,8 +23,8 @@ export default function ClientsList() {
 
   const handleFire = useCallback(
     (index) => {
-      const url = `/demo/client/${state.clients[index].id}`;
-      window.location.assign(url);
+      const location = `${url}/${state.clients[index].id}`;
+      window.location.assign(location);
     },
     [state.clients],
   );

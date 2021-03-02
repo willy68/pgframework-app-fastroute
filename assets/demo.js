@@ -4,4 +4,4 @@ import ClientsList from "./components/ClientsList";
 import './style/demo.css';
 
 const div = document.getElementById('react');
-ReactDOM.render(<ClientsList/>, div);
+ReactDOM.render(<ClientsList url="/demo/client" />, div);

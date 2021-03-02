@@ -12,6 +12,7 @@
   overflow-y: auto;
   font-size: 0.9rem;
   height: 16em;
+  outline: none;
 }
 
 .fixed-header thead {

@@ -1,10 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 
-export default function HighlightRow(props) {
+export default function HighlightRow({ handleSelect, handleFire, ...props }) {
   let startIndex = 0;
-
-  const handleSelect = props.handleSelect;
-  const handleFire = props.handleFire;
 
   const [state, setState] = useState({
     selectedRow: -1,
@@ -17,16 +14,16 @@ export default function HighlightRow(props) {
   useEffect(() => {
 
     if (el && el.current) {
-      document.addEventListener('keydown', handleKeyboardEvent);
+      el.current.addEventListener('keydown', handleKeyboardEvent);
 
       return function cleanup() {
-        document.removeEventListener('keydown', handleKeyboardEvent);
+        el.current.removeEventListener('keydown', handleKeyboardEvent);
       }
 
     }
   }, [state.selectedRow]);
 
-  function handleKeyboardEvent(e) {
+  const handleKeyboardEvent = useCallback(function (e) {
     if (el && el.current) {
       const tbody = el.current.getElementsByTagName('tbody');
       const trCollection = tbody[0].getElementsByTagName('tr');
@@ -63,9 +60,9 @@ export default function HighlightRow(props) {
         handleSelect(index);
       }
     }
-  }
+  }, [el, state.selectedRow]);
 
-  function handleMouseClick(e) {
+  const handleMouseClick = useCallback(function (e) {
     let index = state.selectedRow;
     e.preventDefault();
 
@@ -89,9 +86,9 @@ export default function HighlightRow(props) {
       setState({ selectedRow: index, scrollTop: scroll(index), cancelScroll: true });
       handleSelect(index);
     }
-  }
+  }, [el, state.selectedRow]);
 
-  function handleMouseDblClick(e) {
+  const handleMouseDblClick = useCallback(function (e) {
     let index = state.selectedRow;
     e.preventDefault();
 
@@ -118,49 +115,48 @@ export default function HighlightRow(props) {
         handleFire(index);
       }
     }
-  }
+  }, [el, state.selectedRow]);
 
-  function handleScroll(e) {
+  const handleScroll = useCallback(function (e) {
 
     if (state.cancelScroll && state.scrollTop !== e.target.scrollTop) {
       e.target.scrollTop = state.scrollTop;
       setState(s => ({ ...s, cancelScroll: false }));
     }
-  }
+  }[state.cancelScroll, state.scrollTop]);
 
-  function scroll(index) {
-    const scrollBody = document.getElementsByClassName('fixed-header');
-    if (!scrollBody || scrollBody.length === 0) { return; }
+  const scroll = function (index) {
+    if ((!el && !el.current)) {
+      return state.scrollTop;
+    }
 
-    const trCollection = scrollBody[0].getElementsByTagName('tr');
+    const trCollection = el.current.getElementsByTagName('tr');
     if (!trCollection || trCollection.length === 0) {
-      return;
+      return state.scrollTop;
     }
 
-    const thead = scrollBody[0].getElementsByTagName('thead');
+    const thead = el.current.getElementsByTagName('thead');
     if (!thead || thead.length === 0) {
-      return;
+      return state.scrollTop;
     }
 
-    let scrollBodyEl;
     let theadHeight = 0;
     const theadFixed = thead[0];
     if (theadFixed) {
       theadHeight = theadFixed.offsetHeight;
     }
 
-    scrollBodyEl = scrollBody[0];
     const rowEl = trCollection[index];
-    if (rowEl.offsetTop < scrollBodyEl.scrollTop + theadHeight) {
-      scrollBodyEl.scrollTop = rowEl.offsetTop - theadHeight;
+    if (rowEl.offsetTop < el.current.scrollTop + theadHeight) {
+      el.current.scrollTop = rowEl.offsetTop - theadHeight;
 
       return (rowEl.offsetTop - theadHeight);
 
     } else if ((rowEl.offsetTop + rowEl.offsetHeight + theadHeight) >
-      (scrollBodyEl.scrollTop + scrollBodyEl.offsetHeight)) {
-      scrollBodyEl.scrollTop = rowEl.offsetTop + rowEl.offsetHeight + theadHeight - scrollBodyEl.offsetHeight;
+      (el.current.scrollTop + el.current.offsetHeight)) {
+        el.current.scrollTop = rowEl.offsetTop + rowEl.offsetHeight + theadHeight - el.current.offsetHeight;
 
-      return (rowEl.offsetTop + rowEl.offsetHeight + theadHeight - scrollBodyEl.offsetHeight);
+      return (rowEl.offsetTop + rowEl.offsetHeight + theadHeight - el.current.offsetHeight);
 
     }
 
@@ -172,7 +168,8 @@ export default function HighlightRow(props) {
       ref={el}
       onClick={handleMouseClick}
       onScroll={handleScroll}
-      onDoubleClick={handleMouseDblClick}>
+      onDoubleClick={handleMouseDblClick}
+      tabIndex="0">
       {props.children}
     </div>
   );
