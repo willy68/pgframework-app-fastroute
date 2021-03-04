@@ -11,7 +11,6 @@ use Framework\Auth\LoggedInMiddleware;
 use App\Blog\Actions\CategoryCrudAction;
 use Framework\Renderer\RendererInterface;
 use App\Auth\Middleware\ForbidenMiddleware;
-use Framework\Middleware\InvalidCsrfMiddleware;
 use Framework\Auth\Middleware\CookieLoginMiddleware;
 
 class AdminModule extends Module
@@ -34,13 +33,11 @@ class AdminModule extends Module
         $router->crud("$prefix/posts", PostCrudAction::class, 'blog.admin')
             ->middleware(ForbidenMiddleware::class)
             ->middleware(CookieLoginMiddleware::class)
-            ->middleware(LoggedInMiddleware::class)
-            ->middleware(InvalidCsrfMiddleware::class);
+            ->middleware(LoggedInMiddleware::class);
         $router->crud("$prefix/categories", CategoryCrudAction::class, 'blog.admin.category')
             ->middleware(ForbidenMiddleware::class)
             ->middleware(CookieLoginMiddleware::class)
-            ->middleware(LoggedInMiddleware::class)
-            ->middleware(InvalidCsrfMiddleware::class);
+            ->middleware(LoggedInMiddleware::class);
         if ($renderer instanceof TwigRenderer) {
             $renderer->getTwig()->addExtension($adminTwigExtension);
         }
