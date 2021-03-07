@@ -12,38 +12,22 @@
         {
             "type": "git",
             "url": "https://github.com/willy68/pgconsole.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/willy68/pgframework-fastroute.git"
         }
     ],
     "require": {
-        "twig/twig": "^3.0",
-        "tuupola/http-factory": "^1.1",
-        "pagerfanta/pagerfanta": "^2.1",
-        "grafikart/psr15-csrf-middleware": "^1.0",
-        "intervention/image": "^2.5",
-        "dflydev/fig-cookies": "^3.0",
-        "tuupola/slim-jwt-auth": "^3.4",
-        "willy68/php-activerecord-psr-4": "dev-master",
         "symfony/dotenv": "^5.0",
-        "cakephp/utility": "^4.1",
-        "php-di/invoker": "^2.2",
-        "guzzlehttp/psr7": "^1.6",
         "http-interop/response-sender": "^1.0",
-        "php-di/php-di": "^6.0",
-        "willy68/mezzio-fastroute-dev": "^3.3",
-        "doctrine/annotations": "^1.11",
+        "willy68/pgframework-fastroute": "dev-master",
         "ext-json": "*",
-        "ext-pdo": "*",
-        "fakerphp/faker": "^1.13"
+        "ext-pdo": "*"
     },
     "autoload": {
         "psr-4": {
-            "Framework\\": "src/Framework",
             "App\\": "app"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Application\\Console\\": "bin/src"
         }
     },
     "require-dev": {
@@ -54,7 +38,8 @@
         "odan/phinx-migrations-generator": "^5.3.1",
         "symfony/console": "^5.0",
         "willy68/pgconsole": "dev-master",
-        "symfony/var-dumper": "^5.0"
+        "symfony/var-dumper": "^5.0",
+        "fakerphp/faker": "^1.13"
     },
     "config": {
         "bin-dir": "bin"
