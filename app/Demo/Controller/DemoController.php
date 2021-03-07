@@ -5,9 +5,9 @@ namespace App\Demo\Controller;
 use App\Models\Client;
 use App\Auth\Models\User;
 use Framework\Router\Annotation\Route;
+use Framework\Validator\ValidationRules;
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Framework\Validator\Validation\ValidationRules;
 use Framework\Invoker\Annotation\ParameterConverter;
 use Framework\Database\ActiveRecord\ActiveRecordQuery;
 

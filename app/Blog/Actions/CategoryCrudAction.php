@@ -3,12 +3,12 @@
 namespace App\Blog\Actions;
 
 use App\Blog\Models\Categories;
-use Mezzio\Router\RouterInterface;
 use App\Blog\Table\CategoryTable;
 use Framework\Actions\CrudAction;
+use Framework\Validator\Validator;
+use Mezzio\Router\RouterInterface;
 use Framework\Session\FlashService;
 use Framework\Renderer\RendererInterface;
-use Framework\Validator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class CategoryCrudAction extends CrudAction

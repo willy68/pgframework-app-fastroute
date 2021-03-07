@@ -4,7 +4,7 @@ namespace App\Blog\Actions;
 
 use Mezzio\Router\RouterInterface;
 use App\Blog\PostUpload;
-use Framework\Validator;
+use Framework\Validator\Validator;
 use App\Blog\Entity\Post;
 use App\Blog\Models\Posts;
 use App\Blog\Table\PostTable;
