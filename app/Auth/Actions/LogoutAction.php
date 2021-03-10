@@ -30,8 +30,7 @@ class LogoutAction
     public function __construct(
         AuthSession $auth,
         FlashService $flashService
-    )
-    {
+    ) {
         $this->auth = $auth;
         $this->flashService = $flashService;
     }
@@ -40,6 +39,7 @@ class LogoutAction
     {
         $this->auth->logout();
         $this->flashService->success('Vous êtes maintenant déconnecté');
-        return new ResponseRedirect('/blog');;
+        return new ResponseRedirect('/blog');
+        ;
     }
 }

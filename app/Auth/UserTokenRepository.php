@@ -10,7 +10,7 @@ use Framework\Auth\Repository\TokenRepositoryInterface;
 class UserTokenRepository implements TokenRepositoryInterface
 {
     /**
-     * 
+     *
      * @var UserToken
      */
     protected $model = UserToken::class;
@@ -18,7 +18,7 @@ class UserTokenRepository implements TokenRepositoryInterface
 
     /**
      * get cookie token from database with ActiveRecord library
-     * 
+     *
      * use user series to find token
      *
      * @param mixed $series
@@ -39,7 +39,7 @@ class UserTokenRepository implements TokenRepositoryInterface
 
     /**
      * get cookie token from database with ActiveRecord library
-     * 
+     *
      * use user credential (ex. username or email)
      *
      * @param mixed $credential

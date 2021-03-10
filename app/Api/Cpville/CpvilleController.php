@@ -45,7 +45,7 @@ class CpvilleController extends AbstractApiController
             }
         }
         $options['conditions'] = [$col . ' LIKE ?', $params['search'] . '%'];
-    
+
         try {
             if (!empty($options)) {
                 $cpville = $this->model::all($options);
@@ -55,11 +55,11 @@ class CpvilleController extends AbstractApiController
         } catch (RecordNotFound $e) {
             return new Response(404);
         }
-    
+
         if (empty($cpville)) {
             return new Response(404);
         }
-    
+
         $json = $this->jsonArray($cpville);
         return new Response(200, [], $json);
     }

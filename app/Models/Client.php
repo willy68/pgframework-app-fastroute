@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use ActiveRecord;
-  
+
 class Client extends ActiveRecord\Model
 {
     public static $table_name = 'client';

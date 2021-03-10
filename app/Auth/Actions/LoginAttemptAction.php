@@ -35,7 +35,7 @@ class LoginAttemptAction
     private $auth;
 
     /**
-     * 
+     *
      *
      * @var RememberMeInterface
      */

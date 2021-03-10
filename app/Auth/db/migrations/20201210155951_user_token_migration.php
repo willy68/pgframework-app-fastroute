@@ -74,6 +74,5 @@ class UserTokenMigration extends AbstractMigration
         ])
         ->addIndex('series', ['unique' => true])
         ->create();
-
     }
 }

@@ -42,7 +42,7 @@ class User extends Model implements AuthUser
 
     /**
      * Get the value of email
-     */ 
+     */
     public function getEmail(): string
     {
         return $this->email;
@@ -56,5 +56,4 @@ class User extends Model implements AuthUser
     {
         return $this->password;
     }
-
 }

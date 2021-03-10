@@ -21,7 +21,7 @@ class DemoController
      * Il est possible d'injecter la ServerRequestInterface
      * et les paramètres de la route (ex. $id).
      * Ce type d'injection est possible avec \DI\Container de PHP-DI
-     * 
+     *
      * @Route("/", name="demo.index", methods={"GET"})
      *
      * @param ServerRequestInterface $request
@@ -64,7 +64,7 @@ class DemoController
      * @Route("/demo/client/{id:\d+}", name="demo.client", methods={"GET"})
      *
      * @ParameterConverter("client", options={"id"="id", "include"="adresses"})
-     * 
+     *
      * @param \App\Models\Client $client
      * @param \Framework\Renderer\RendererInterface $renderer
      * @return string

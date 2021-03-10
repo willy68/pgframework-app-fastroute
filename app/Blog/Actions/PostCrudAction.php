@@ -97,7 +97,7 @@ class PostCrudAction extends CrudAction
                 unset($params['image']);
             }
         }
-         
+
         $params = array_filter($params, function ($key) {
             return in_array($key, ['name', 'slug', 'content', 'created_at', 'category_id', 'image', 'published']);
         }, ARRAY_FILTER_USE_KEY);

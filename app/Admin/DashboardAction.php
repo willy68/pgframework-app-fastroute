@@ -30,7 +30,7 @@ class DashboardAction
     }
 
     /**
-     * 
+     *
      * @Route("/admin", name="admin", methods={"GET"})
      *
      * @return string

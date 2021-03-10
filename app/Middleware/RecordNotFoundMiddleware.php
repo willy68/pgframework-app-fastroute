@@ -1,6 +1,6 @@
 <?php
-namespace App\Middleware;
 
+namespace App\Middleware;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -28,17 +28,16 @@ class RecordNotFoundMiddleware implements MiddlewareInterface
     {
         $this->renderer = $renderer;
     }
-    
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
             return $handler->handle($request);
-        }
-        catch(RecordNotFound $e) {
+        } catch (RecordNotFound $e) {
             return new Response(404, [], $this->renderer->render(
                 'error404',
-                ['message' => $e->getMessage()])
-            );
+                ['message' => $e->getMessage()]
+            ));
         }
     }
 }

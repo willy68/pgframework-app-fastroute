@@ -46,7 +46,7 @@ class PostShowAction
      * Show blog post
      *
      * @Route("/{slug:[a-z\-0-9]+}-{id:[0-9]+}", name="blog.show", method={"GET"})
-     * 
+     *
      * @param string $slug
      * @param Post $post
      * @return mixed
@@ -67,7 +67,7 @@ class PostShowAction
 
     /**
      * Show blog post
-     * 
+     *
      * @Route("/category/{category_id:[0-9]+}/post/{id:[0-9]+}", name="blog.postShow")
      * @ParameterConverter("category", options={"id"="category_id"})
      *
@@ -84,7 +84,7 @@ class PostShowAction
 
     /**
      * Show blog post
-     * 
+     *
      * @Route("/category/{category_slug:[a-z\-0-9]+}/post/{id:[0-9]+}", name="blog.postCategoryShow", methods={"GET"})
      * @ParameterConverter("category", options={"slug"="category_slug"})
      *

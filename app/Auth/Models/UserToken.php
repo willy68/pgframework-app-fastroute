@@ -13,7 +13,7 @@ class UserToken extends Model implements TokenInterface
 
     /**
      * get token id
-     * 
+     *
      * @return int
      */
     public function getId(): int
@@ -33,7 +33,7 @@ class UserToken extends Model implements TokenInterface
 
     /**
      * get the unique user credential (ex. username or email)
-     * 
+     *
      * @return string
      */
     public function getCredential(): string

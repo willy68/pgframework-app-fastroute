@@ -47,12 +47,11 @@ class CategoryShowAction
             $page = $params['p'] ?? 1;
 
             return $this->renderer->render('@blog/index', compact('posts', 'categories', 'category', 'page'));
-        }
-        else {
+        } else {
             return new Response(404, [], $this->renderer->render(
                 'error404',
-                ['message' => 'Impossible de trouver cette categorie: ' . $request->getAttribute('slug')])
-            );
+                ['message' => 'Impossible de trouver cette categorie: ' . $request->getAttribute('slug')]
+            ));
         }
     }
 }

@@ -9,7 +9,7 @@ use Framework\Auth\Repository\UserRepositoryInterface;
 class ActiveRecordUserRepository implements UserRepositoryInterface
 {
     /**
-     * 
+     *
      * @var User
      */
     protected $model = User::class;
@@ -18,7 +18,7 @@ class ActiveRecordUserRepository implements UserRepositoryInterface
     {
         try {
             $user = $this->model::find(['conditions' => ["$field = ?", $value]]);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
         if ($user) {

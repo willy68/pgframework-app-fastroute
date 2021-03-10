@@ -7,7 +7,7 @@ use Framework\Auth\User as AuthUser;
 class User implements AuthUser
 {
     public $id;
-    
+
     public $username;
 
     public $email;
@@ -47,7 +47,7 @@ class User implements AuthUser
 
     /**
      * Get the value of email
-     */ 
+     */
     public function getEmail(): string
     {
         return $this->email;
